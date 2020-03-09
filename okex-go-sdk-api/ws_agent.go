@@ -46,6 +46,7 @@ func (a *OKWSAgent) Start(config *Config) error {
 	log.Printf("Connecting to %s", a.baseUrl)
 	c, _, err := websocket.DefaultDialer.Dial(a.baseUrl, nil)
 
+	a.config = config
 	if err != nil {
 		log.Fatalf("dial:%+v", err)
 		return err
