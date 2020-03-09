@@ -96,6 +96,17 @@ const (
 	OrderStrategyIOC 	  OrderStrategy = "3"
 )
 
+type OrderStatus string
+const (
+	OrderStatusFailed   	   OrderStatus = "-2"
+	OrderStatusCanceled   	   OrderStatus = "-1"
+	OrderStatusOpen   		   OrderStatus = "0"
+	OrderStatusPartiallyFilled OrderStatus = "1"
+	OrderStatusFullyFilled 	   OrderStatus = "2"
+	OrderStatusSubmitting 	   OrderStatus = "3"
+	OrderStatusCanceling 	   OrderStatus = "4"
+)
+
 type Order struct {
 	OrderID        string          `json:"order_id"` // TODO may use like a number?
 	ClientOrderID  string          `json:"client_oid"`
@@ -110,7 +121,7 @@ type Order struct {
 	Type           OrderType       `json:"type"`       // Order type: limit or market (default: limit)
 	Side           OrderSide       `json:"side"`       // 'buy' or 'sell'
 	Strategy       OrderStrategy   `json:"order_type"` // Specify 0: Normal order (Unfilled and 0 imply normal limit order) 1: Post only 2: Fill or Kill 3: Immediate Or Cancel
-	State          string          `json:"state"`      // Order Status: -2 = Failed -1 = Canceled 0 = Open 1 = Partially Filled 2 = Fully Filled 3 = Submitting 4 = Canceling
+	Status         OrderStatus     `json:"state"`      // Order Status: -2 = Failed -1 = Canceled 0 = Open 1 = Partially Filled 2 = Fully Filled 3 = Submitting 4 = Canceling
 }
 
 type OrdersList []*Order
