@@ -1,7 +1,6 @@
 package okex
 
 import (
-	"fmt"
 	"strconv"
 	"sync"
 	"time"
@@ -20,9 +19,18 @@ type SpotInstrument struct {
 
 type SpotInstrumentsList []*SpotInstrument
 
+type BoolNum string
+const (
+	BoolNumTrue  = "1"
+	BoolNumFalse = "0"
+)
+func (b BoolNum) IsTrue() bool {
+	return b == BoolNumTrue
+}
+
 type AccountCurrency struct {
-	CanDeposit    int8            `json:"can_deposit"` // 1 == true
-	CanWithdraw   int8            `json:"can_withdraw"` // 1 == true
+	CanDeposit    BoolNum         `json:"can_deposit"`  // "1" == true
+	CanWithdraw   BoolNum         `json:"can_withdraw"` // "1" == true
 	Currency      string          `json:"currency"`
 	FullName      string          `json:"name"`
 	MinWithdrawal decimal.Decimal `json:"min_withdrawal"`
@@ -271,6 +279,7 @@ func (l *Limiter) useTurn() {
 	lastUseIndex := lastIndex
 
 	if turnLen > 100 {
+		// TODO warning
 	}
 
 	limit := int(l.Limit)
@@ -281,7 +290,6 @@ func (l *Limiter) useTurn() {
 		group.Add(turnLen)
 	}
 
-	fmt.Println("group", strconv.Itoa(int(time.Now().UnixNano() / 1_000_000))[9:])
 	for i, fnItem := range l.Turn {
 		go func(fn func()) {
 			fn()
@@ -306,7 +314,7 @@ var ( // LIMIT
 	spotAccountListLimit  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
 	spotTickersLimit	  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
 	spotInstrumentsLimit  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	accountCurrencyLimit  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	accountCurrencyLimit  = &Limiter{Limit: 3, PeriodMillisecond: 1_200}
 	spotPlaceOrderLimit	  = &Limiter{Limit: 50, PeriodMillisecond: 1_200}
 	spotCancelOrderLimit  = &Limiter{Limit: 50, PeriodMillisecond: 1_200}
 	spotOrderListLimit	  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
@@ -314,7 +322,7 @@ var ( // LIMIT
 	spotTradeFeeLimit 	  = &Limiter{Limit: 1, PeriodMillisecond: 11_000}
 )
 
-func (client *Client) AwaitGetSpotAccounts() (SpotAccountBalancesList, error) {
+func (client *Client) LimitedGetSpotAccounts() (SpotAccountBalancesList, error) {
 	r := SpotAccountBalancesList{}
 	ch := make(chan interface{}, 2)
 	var err error
@@ -328,13 +336,164 @@ func (client *Client) AwaitGetSpotAccounts() (SpotAccountBalancesList, error) {
 	return r, err
 }
 
-func (client *Client) AwaitGetSpotInstrumentsTicker() (SpotInstrumentsTickerList, error) {
+func (client *Client) LimitedGetSpotInstrumentsTicker() (SpotInstrumentsTickerList, error) {
 	r := SpotInstrumentsTickerList{}
 	ch := make(chan interface{}, 2)
 	var err error
 
 	spotTickersLimit.Wait(func() {
 		_, err = client.Request(GET, SPOT_INSTRUMENTS_TICKER, nil, &r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+func (client *Client) LimitedGetSpotInstruments() (SpotInstrumentsList, error) {
+	r := SpotInstrumentsList{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	spotInstrumentsLimit.Wait(func() {
+		_, err = client.Request(GET, SPOT_INSTRUMENTS, nil, &r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+func (client *Client) LimitedGetAccountCurrencies() (AccountCurrenciesList, error) {
+	r := AccountCurrenciesList{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	accountCurrencyLimit.Wait(func() {
+		_, err = client.Request(GET, ACCOUNT_CURRENCIES, nil, &r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+func (client *Client) LimitedGetAllSpotOrders(status OrderStatus, pair string) (list OrdersList, err error) {
+	var data OrdersList
+	limit := 100
+	limitStr := strconv.Itoa(limit)
+	afterID, beforeID := "", ""
+
+	for {
+		data, err = client.LimitedGetSpotOrders(status, pair, afterID, beforeID, limitStr)
+		if err != nil {
+			return
+		}
+		list = append(list, data...)
+
+		if len(data) < limit {
+			break
+		}
+
+		afterID = data[len(data) - 1].OrderID
+	}
+
+	return
+}
+
+func (client *Client) LimitedGetSpotOrders(status OrderStatus, pair string, afterID string, beforeID string, limit string) (OrdersList, error) {
+	r := OrdersList{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	options := NewParams()
+	options["instrument_id"] = pair
+	options["state"] = string(status)
+	options["after"] = afterID
+	options["before"] = beforeID
+	options["limit"] = limit
+	uri := BuildParams(SPOT_ORDERS, options)
+
+	spotOrderListLimit.Wait(func() {
+		_, err = client.Request(GET, uri, nil, &r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+func (client *Client) LimitedGetSpotOrdersByID(pair, orderOrClientID string) (*Order, error) {
+	r := &Order{}
+	ch := make(chan interface{}, 2)
+	var err error
+	uri := SPOT_ORDERS + "/" + orderOrClientID
+	options := NewParams()
+	options["instrument_id"] = pair
+	uri = BuildParams(uri, options)
+
+	spotOrderDetailsLimit.Wait(func() {
+		_, err = client.Request(GET, uri, nil, r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+func (client *Client) LimitedSpotCancelOrders(pair, orderOrClientID string) (*SpotCancelOrderResponse, error) {
+	r := &SpotCancelOrderResponse{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	uri := "/api/spot/v3/cancel_orders/" + orderOrClientID
+	options := NewParams()
+	options["instrument_id"] = pair
+
+	spotCancelOrderLimit.Wait(func() {
+		_, err = client.Request(POST, uri, options, r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+func (client *Client) LimitedPostSpotOrders(side OrderSide, orderType OrderType, strategy OrderStrategy, pair string, price, quantity decimal.Decimal, notional string) (*SpotNewOrderResponse, error) {
+	r := &SpotNewOrderResponse{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	postParams := NewParams()
+	postParams["side"] = string(side)
+	postParams["instrument_id"] = pair
+	postParams["type"] = string(orderType)
+	postParams["order_type"] = string(strategy)
+
+	if orderType == OrderTypeLimit {
+		postParams["price"] = price.String()
+		postParams["size"] = quantity.String()
+	} else {
+		postParams["size"] = quantity.String()
+		postParams["notional"] = notional
+	}
+
+	spotPlaceOrderLimit.Wait(func() {
+		_, err = client.Request(POST, SPOT_ORDERS, postParams, &r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+func (client *Client) LimitedGetSpotTradeFee() (*TradeFee, error) {
+	r := &TradeFee{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	spotTradeFeeLimit.Wait(func() {
+		_, err = client.Request(GET, "/api/spot/v3/trade_fee", nil, r)
 		ch <- nil
 	})
 
