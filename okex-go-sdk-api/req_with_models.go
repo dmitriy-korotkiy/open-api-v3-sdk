@@ -143,6 +143,14 @@ type TradeFee struct {
 	Timestamp time.Time       `json:"timestamp"`
 }
 
+type WithdrawalFee struct {
+	Currency string          `json:"currency"`
+	MaxFee   decimal.Decimal `json:"max_fee"`
+	MinFee   decimal.Decimal `json:"min_fee"`
+}
+
+type WithdrawalFeesList []*WithdrawalFee
+
 type OrderUpdateWS struct {
 	*Order
 	LastFillPrice   decimal.Decimal `json:"last_fill_px"`   // Latest Filled Price. '0' will be returned if the data is empty
@@ -314,12 +322,13 @@ var ( // LIMIT
 	spotAccountListLimit  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
 	spotTickersLimit	  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
 	spotInstrumentsLimit  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	accountCurrencyLimit  = &Limiter{Limit: 3, PeriodMillisecond: 1_200}
+	accountCurrencyLimit  = &Limiter{Limit: 3,  PeriodMillisecond: 1_200}
 	spotPlaceOrderLimit	  = &Limiter{Limit: 50, PeriodMillisecond: 1_200}
 	spotCancelOrderLimit  = &Limiter{Limit: 50, PeriodMillisecond: 1_200}
 	spotOrderListLimit	  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
 	spotOrderDetailsLimit = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	spotTradeFeeLimit 	  = &Limiter{Limit: 1, PeriodMillisecond: 11_000}
+	spotTradeFeeLimit 	  = &Limiter{Limit: 1,  PeriodMillisecond: 11_000}
+	withdrawalFeeLimit    = &Limiter{Limit: 5,  PeriodMillisecond: 1_200}
 )
 
 func (client *Client) LimitedGetSpotAccounts() (SpotAccountBalancesList, error) {
@@ -494,6 +503,28 @@ func (client *Client) LimitedGetSpotTradeFee() (*TradeFee, error) {
 
 	spotTradeFeeLimit.Wait(func() {
 		_, err = client.Request(GET, "/api/spot/v3/trade_fee", nil, r)
+		ch <- nil
+	})
+
+	<-ch
+	return r, err
+}
+
+// LimitedGetWithdrawalFee arg currency not required
+func (client *Client) LimitedGetWithdrawalFee(currency string) (WithdrawalFeesList, error) {
+	r := WithdrawalFeesList{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	uri := ACCOUNT_WITHRAWAL_FEE
+	if currency != "" {
+		params := NewParams()
+		params["currency"] = currency
+		uri = BuildParams(uri, params)
+	}
+
+	withdrawalFeeLimit.Wait(func() {
+		_, err = client.Request(GET, uri, nil, &r)
 		ch <- nil
 	})
 
