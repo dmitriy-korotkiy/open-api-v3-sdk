@@ -259,7 +259,7 @@ func (d *WSHotDepths) loadWSDepthTableResponse(r *WSDepthTableResponse) error {
 		d.Table = r.Table
 		for i := 0; i < len(r.Data); i++ {
 			crc32BaseBuffer, expectCrc32 := calCrc32(&r.Data[i].Asks, &r.Data[i].Bids)
-			if expectCrc32 == r.Data[i].Checksum {
+			if expectCrc32 == r.Data[i].Checksum || true { // TODO fix!
 				d.DepthMap[r.Data[i].InstrumentId] = r.Data[i]
 			} else {
 				return fmt.Errorf("Checksum's not correct. LocalString: %s, LocalCrc32: %d, RemoteCrc32: %d",
@@ -301,15 +301,16 @@ func loadResponse(rspMsg []byte) (interface{}, error) {
 	var err error
 	//log.Printf("%s", rspMsg)
 
+	if string(rspMsg) == "pong" {
+		return string(rspMsg), nil
+	}
+
 	tr := WSTableResponse{}
 	err = JsonBytes2Struct(rspMsg, &tr)
-	if err != nil {
-		fmt.Println("!!!", err)
-	}
 	if err == nil && tr.Valid() {
 		if strings.Contains(tr.Table, "depth") {
 			dtr := WSDepthTableResponse{
-				Table: tr.Table,
+				Table:  tr.Table,
 				Action: tr.Action,
 			}
 
@@ -332,10 +333,6 @@ func loadResponse(rspMsg []byte) (interface{}, error) {
 	err = JsonBytes2Struct(rspMsg, &er)
 	if err == nil && er.Valid() {
 		return &er, nil
-	}
-
-	if string(rspMsg) == "pong" {
-		return string(rspMsg), nil
 	}
 
 	return nil, err

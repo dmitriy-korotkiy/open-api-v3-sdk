@@ -10,6 +10,7 @@ package okex
 import (
 	"bytes"
 	"compress/flate"
+	"fmt"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 
@@ -43,7 +44,10 @@ type OKWSAgent struct {
 
 func (a *OKWSAgent) Start(config *Config) error {
 	a.baseUrl = config.WSEndpoint + "ws/v3?compress=true"
-	log.Printf("Connecting to %s", a.baseUrl)
+	if config.IsPrint {
+		log.Printf("Connecting to %s", a.baseUrl)
+	}
+
 	c, _, err := websocket.DefaultDialer.Dial(a.baseUrl, nil)
 
 	a.config = config
@@ -95,17 +99,21 @@ func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) e
 		return err
 	}
 
-	cbs := a.subMap[st.channel]
+	chName := st.channel
+	fullTopic, _ := st.ToString()
+	if fullTopic != "" {
+		chName = fullTopic
+	}
+
+	cbs := a.subMap[chName]
 	if cbs == nil {
 		cbs = []ReceivedDataCallback{}
-		a.activeChannels[st.channel] = false
+		a.activeChannels[chName] = false
 	}
 
 	if cb != nil {
 		cbs = append(cbs, cb)
-		fullTopic, _ := st.ToString()
-		a.subMap[st.channel] = cbs
-		a.subMap[fullTopic] = cbs
+		a.subMap[chName] = cbs
 	}
 
 	return nil
@@ -218,7 +226,12 @@ func (a *OKWSAgent) handleTableResponse(r interface{}) error {
 	case *WSTableResponse:
 		tb = r.(*WSTableResponse).Table
 	case *WSDepthTableResponse:
-		tb = r.(*WSDepthTableResponse).Table
+		v := r.(*WSDepthTableResponse)
+		if len(v.Data) > 0 {
+			tb = v.Table + ":" + v.Data[0].InstrumentId
+		} else {
+			return fmt.Errorf("handleTableResponse() !(len(v.Data) > 0)")
+		}
 	}
 
 	cbs := a.subMap[tb]
@@ -310,24 +323,24 @@ func (a *OKWSAgent) receive() {
 			er := rsp.(*WSEventResponse)
 			a.wsEvtCh <- er
 		case *WSDepthTableResponse:
-			var err error
+			//var err error
 			dtr := rsp.(*WSDepthTableResponse)
-			hotDepths := a.hotDepthsMap[dtr.Table]
-			if hotDepths == nil {
-				hotDepths = NewWSHotDepths(dtr.Table)
-				err = hotDepths.loadWSDepthTableResponse(dtr)
-				if err == nil {
-					a.hotDepthsMap[dtr.Table] = hotDepths
-				}
-			} else {
-				err = hotDepths.loadWSDepthTableResponse(dtr)
-			}
+			//hotDepths := a.hotDepthsMap[dtr.Table]
+			//if hotDepths == nil {
+			//	hotDepths = NewWSHotDepths(dtr.Table)
+			//	err = hotDepths.loadWSDepthTableResponse(dtr)
+			//	if err == nil {
+			//		a.hotDepthsMap[dtr.Table] = hotDepths
+			//	}
+			//} else {
+			//	err = hotDepths.loadWSDepthTableResponse(dtr)
+			//}
 
-			if err == nil {
-				a.wsTbCh <- dtr
-			} else {
-				log.Printf("Failed to loadWSDepthTableResponse, dtr: %+v, err: %+v", dtr, err)
-			}
+			//if err == nil {
+			a.wsTbCh <- dtr
+			//} else {
+			//	log.Printf("Failed to loadWSDepthTableResponse, dtr: %+v, err: %+v", dtr, err)
+			//}
 
 		case *WSTableResponse:
 			tb := rsp.(*WSTableResponse)
