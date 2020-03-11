@@ -2,10 +2,10 @@ package okex
 
 import (
 	"strconv"
-	"sync"
 	"time"
 
 	"github.com/shopspring/decimal"
+	"github.com/darkfoxs96/golimiter/limiter"
 )
 
 type SpotInstrument struct {
@@ -209,126 +209,17 @@ type Depth400Data struct {
 	Checksum  int64                `json:"checksum"`
 }
 
-type Limiter struct {
-	PeriodMillisecond    int64
-	Limit                uint8
-	Used                 uint8
-	Active               uint8
-	FirstTimestampMilSec int64
-	Turn                 []func()
-	InTern               bool
-	Mutex                sync.Mutex
-}
-
-func (l *Limiter) Wait(fn func()) {
-	l.Mutex.Lock()
-	defer l.Mutex.Unlock()
-
-	if l.InTern {
-		l.Turn = append(l.Turn, fn)
-		return
-	}
-
-	if l.Used >= l.Limit {
-		l.Turn = append(l.Turn, fn)
-
-		if l.Active == 0 {
-			l.awaitIfNeed()
-		}
-		return
-	}
-
-	if l.Used == 0 {
-		l.FirstTimestampMilSec = time.Now().UnixNano() / 1_000_000
-	}
-	l.Active++
-	l.Used++
-
-	go func() {
-		fn()
-
-		l.Mutex.Lock()
-		defer l.Mutex.Unlock()
-		l.Active--
-
-		if l.Active == 0 && len(l.Turn) > 0 {
-			l.awaitIfNeed()
-		}
-	}()
-}
-
-func (l *Limiter) awaitIfNeed() {
-	timeNow := time.Now().UnixNano() / 1_000_000
-	timeAfter := l.FirstTimestampMilSec + l.PeriodMillisecond
-
-	if timeNow < timeAfter {
-		l.InTern = true
-		go l.awaitAndUseTurn(time.Duration(timeAfter - timeNow))
-		return
-	} else {
-		l.useTurn()
-	}
-}
-
-func (l *Limiter) awaitAndUseTurn(waitMillisecond time.Duration) {
-	time.Sleep(time.Millisecond * (waitMillisecond + 10))
-
-	l.Mutex.Lock()
-	defer l.Mutex.Unlock()
-	l.useTurn()
-}
-
-func (l *Limiter) useTurn() {
-	l.FirstTimestampMilSec = time.Now().UnixNano() / 1_000_000
-	l.Used = 0
-	group := sync.WaitGroup{}
-	turnLen := len(l.Turn)
-	lastIndex := turnLen - 1
-	lastUseIndex := lastIndex
-
-	if turnLen > 100 {
-		// TODO warning
-	}
-
-	limit := int(l.Limit)
-	if lastIndex > limit - 1 {
-		lastUseIndex = limit - 1
-		group.Add(limit)
-	} else {
-		group.Add(turnLen)
-	}
-
-	for i, fnItem := range l.Turn {
-		go func(fn func()) {
-			fn()
-			group.Done()
-		}(fnItem)
-
-		if i == lastUseIndex {
-			break
-		}
-	}
-
-	group.Wait()
-	l.Turn = append(l.Turn[lastUseIndex+1:])
-
-	l.InTern = len(l.Turn) > 0
-	if l.InTern {
-		go l.awaitAndUseTurn(time.Duration(l.PeriodMillisecond))
-	}
-}
-
 var ( // LIMIT
-	spotAccountListLimit  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	spotTickersLimit	  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	spotInstrumentsLimit  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	accountCurrencyLimit  = &Limiter{Limit: 3,  PeriodMillisecond: 1_200}
-	spotPlaceOrderLimit	  = &Limiter{Limit: 50, PeriodMillisecond: 1_200}
-	spotCancelOrderLimit  = &Limiter{Limit: 50, PeriodMillisecond: 1_200}
-	spotOrderListLimit	  = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	spotOrderDetailsLimit = &Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	spotTradeFeeLimit 	  = &Limiter{Limit: 1,  PeriodMillisecond: 11_000}
-	withdrawalFeeLimit    = &Limiter{Limit: 5,  PeriodMillisecond: 1_200}
+	spotAccountListLimit  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	spotTickersLimit	  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	spotInstrumentsLimit  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	accountCurrencyLimit  = &limiter.Limiter{Limit: 3,  PeriodMillisecond: 1_200}
+	spotPlaceOrderLimit	  = &limiter.Limiter{Limit: 50, PeriodMillisecond: 1_200}
+	spotCancelOrderLimit  = &limiter.Limiter{Limit: 50, PeriodMillisecond: 1_200}
+	spotOrderListLimit	  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	spotOrderDetailsLimit = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	spotTradeFeeLimit 	  = &limiter.Limiter{Limit: 1,  PeriodMillisecond: 11_000}
+	withdrawalFeeLimit    = &limiter.Limiter{Limit: 5,  PeriodMillisecond: 1_200}
 )
 
 func (client *Client) LimitedGetSpotAccounts() (SpotAccountBalancesList, error) {
