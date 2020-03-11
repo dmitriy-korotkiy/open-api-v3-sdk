@@ -11,6 +11,7 @@ import (
 	"bytes"
 	"compress/flate"
 	"fmt"
+	"github.com/darkfoxs96/golimiter/limiter"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 
@@ -81,6 +82,8 @@ func (a *OKWSAgent) Start(config *Config) error {
 	return nil
 }
 
+var wsLimiter = limiter.Limiter{Limit: 50, PeriodMillisecond: 1_000}
+
 func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) error {
 	a.processMut.Lock()
 	defer a.processMut.Unlock()
@@ -95,7 +98,16 @@ func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) e
 	if a.config.IsPrint {
 		log.Printf("Send Msg: %s", msg)
 	}
-	if err := a.conn.WriteMessage(websocket.TextMessage, []byte(msg)); err != nil {
+
+	ch := make(chan interface{}, 2)
+
+	wsLimiter.Wait(func() {
+		err = a.conn.WriteMessage(websocket.TextMessage, []byte(msg))
+		ch <- nil
+	})
+
+	<-ch
+	if err != nil {
 		return err
 	}
 
@@ -133,7 +145,16 @@ func (a *OKWSAgent) UnSubscribe(channel, filter string) error {
 	if a.config.IsPrint {
 		log.Printf("Send Msg: %s", msg)
 	}
-	if err := a.conn.WriteMessage(websocket.TextMessage, []byte(msg)); err != nil {
+
+	ch := make(chan interface{}, 2)
+
+	wsLimiter.Wait(func() {
+		err = a.conn.WriteMessage(websocket.TextMessage, []byte(msg))
+		ch <- nil
+	})
+
+	<-ch
+	if err != nil {
 		return err
 	}
 
