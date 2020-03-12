@@ -11,17 +11,18 @@ import (
 	"bytes"
 	"compress/flate"
 	"fmt"
-	"github.com/darkfoxs96/golimiter/limiter"
-	"github.com/gorilla/websocket"
 	"io/ioutil"
-
 	"log"
 	"os"
 	"os/signal"
 	"runtime/debug"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/darkfoxs96/golimiter/limiter"
+	"github.com/gorilla/websocket"
 )
 
 type OKWSAgent struct {
@@ -50,33 +51,55 @@ func (a *OKWSAgent) Start(config *Config) error {
 	}
 
 	c, _, err := websocket.DefaultDialer.Dial(a.baseUrl, nil)
+	oldCh := a.subMap
 
 	a.config = config
 	if err != nil {
-		log.Fatalf("dial:%+v", err)
-		return err
-	} else {
-		if a.config.IsPrint {
-			log.Printf("Connected to %s", a.baseUrl)
+		if config.IsPrint {
+			log.Fatalf("dial:%+v", err)
 		}
-		a.conn = c
-		a.config = config
+		return err
+	}
 
-		a.wsEvtCh = make(chan interface{})
-		a.wsErrCh = make(chan interface{})
-		a.wsTbCh = make(chan interface{})
-		a.errCh = make(chan error)
-		a.stopCh = make(chan interface{}, 16)
-		a.signalCh = make(chan os.Signal)
-		a.activeChannels = make(map[string]bool)
-		a.subMap = make(map[string][]ReceivedDataCallback)
-		a.hotDepthsMap = make(map[string]*WSHotDepths)
+	if a.config.IsPrint {
+		log.Printf("Connected to %s", a.baseUrl)
+	}
+	a.conn = c
+	a.config = config
 
-		signal.Notify(a.signalCh, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	a.wsEvtCh = make(chan interface{})
+	a.wsErrCh = make(chan interface{})
+	a.wsTbCh = make(chan interface{})
+	a.errCh = make(chan error)
+	a.stopCh = make(chan interface{}, 16)
+	a.signalCh = make(chan os.Signal)
+	a.activeChannels = make(map[string]bool)
+	a.subMap = make(map[string][]ReceivedDataCallback)
+	a.hotDepthsMap = make(map[string]*WSHotDepths)
 
-		go a.work()
-		go a.receive()
-		go a.finalize()
+	signal.Notify(a.signalCh, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
+	go a.work()
+	go a.receive()
+	go a.finalize()
+
+	for chName, fns := range oldCh {
+		var channel string
+		var filter string
+
+		chFil := strings.Split(chName, ":")
+		if len(chFil) > 0 {
+			channel = chFil[0]
+		}
+		if len(chFil) > 1 {
+			filter = chFil[1]
+		}
+
+		for _, fn := range fns {
+			if err = a.Subscribe(channel, filter, fn); err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil
@@ -307,12 +330,20 @@ func (a *OKWSAgent) work() {
 	}
 }
 
+func (a *OKWSAgent) restart() {
+	time.Sleep(time.Second * 2)
+	err := a.Start(a.config)
+	if err != nil {
+		log.Println("receive().recover.restart():", err)
+		go a.restart()
+	}
+
+}
+
 func (a *OKWSAgent) receive() {
 	defer func() {
-		a := recover()
-		if a != nil {
-			log.Printf("Receive End. Recover msg: %+v", a)
-			debug.PrintStack()
+		if r := recover(); r != nil {
+			go a.restart()
 		}
 	}()
 
