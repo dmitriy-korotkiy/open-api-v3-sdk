@@ -230,7 +230,9 @@ func (a *OKWSAgent) Stop() error {
 
 func (a *OKWSAgent) finalize() error {
 	defer func() {
-		log.Printf("Finalize End. Connection to WebSocket is closed.")
+		if a.config.IsPrint {
+			log.Printf("Finalize End. Connection to WebSocket is closed.")
+		}
 	}()
 
 	select {
@@ -261,11 +263,17 @@ func (a *OKWSAgent) GzipDecode(in []byte) ([]byte, error) {
 }
 
 func (a *OKWSAgent) handleErrResponse(r interface{}) error {
-	log.Printf("handleErrResponse %+v \n", r)
+	if r != nil {
+		log.Printf("handleErrResponse %+v \n", r)
+	}
 	return nil
 }
 
 func (a *OKWSAgent) handleEventResponse(r interface{}) error {
+	if r == nil {
+		return nil
+	}
+
 	er := r.(*WSEventResponse)
 	a.activeChannels[er.Channel] = (er.Event == CHNL_EVENT_SUBSCRIBE)
 	return nil
@@ -299,9 +307,10 @@ func (a *OKWSAgent) handleTableResponse(r interface{}) error {
 
 func (a *OKWSAgent) work() {
 	defer func() {
-		a := recover()
-		log.Printf("Work End. Recover msg: %+v", a)
-		debug.PrintStack()
+		if r := recover(); r != nil {
+			log.Printf("Work End. Recover msg: %+v", a)
+			debug.PrintStack()
+		}
 	}()
 
 	defer a.Stop()
