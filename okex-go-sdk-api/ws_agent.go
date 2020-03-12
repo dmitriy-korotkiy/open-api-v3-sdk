@@ -219,8 +219,9 @@ func (a *OKWSAgent) keepalive() {
 
 func (a *OKWSAgent) Stop() error {
 	defer func() {
-		a := recover()
-		log.Printf("Stop End. Recover msg: %+v", a)
+		if r := recover(); r != nil && a.config.IsPrint {
+			log.Printf("Stop End. Recover msg: %+v", a)
+		}
 	}()
 
 	close(a.stopCh)
