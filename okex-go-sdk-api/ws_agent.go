@@ -42,6 +42,7 @@ type OKWSAgent struct {
 	hotDepthsMap   map[string]*WSHotDepths
 
 	processMut sync.RWMutex
+	wsMut      sync.Mutex
 }
 
 func (a *OKWSAgent) Start(config *Config) error {
@@ -125,6 +126,9 @@ func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) e
 	ch := make(chan interface{}, 2)
 
 	wsLimiter.Wait(func() {
+		a.wsMut.Lock()
+		defer a.wsMut.Unlock()
+
 		err = a.conn.WriteMessage(websocket.TextMessage, []byte(msg))
 		ch <- nil
 	})
@@ -172,6 +176,9 @@ func (a *OKWSAgent) UnSubscribe(channel, filter string) error {
 	ch := make(chan interface{}, 2)
 
 	wsLimiter.Wait(func() {
+		a.wsMut.Lock()
+		defer a.wsMut.Unlock()
+
 		err = a.conn.WriteMessage(websocket.TextMessage, []byte(msg))
 		ch <- nil
 	})
@@ -194,6 +201,8 @@ func (a *OKWSAgent) UnSubscribe(channel, filter string) error {
 }
 
 func (a *OKWSAgent) Login(apiKey, passphrase string) error {
+	a.wsMut.Lock()
+	defer a.wsMut.Unlock()
 
 	timestamp := EpochTime()
 
@@ -250,6 +259,9 @@ func (a *OKWSAgent) finalize() error {
 }
 
 func (a *OKWSAgent) ping() {
+	a.wsMut.Lock()
+	defer a.wsMut.Unlock()
+
 	msg := "ping"
 	//log.Printf("Send Msg: %s", msg)
 	a.conn.WriteMessage(websocket.TextMessage, []byte(msg))
