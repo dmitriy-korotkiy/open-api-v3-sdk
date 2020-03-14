@@ -41,7 +41,7 @@ type OKWSAgent struct {
 	activeChannels map[string]bool
 	hotDepthsMap   map[string]*WSHotDepths
 
-	processMut sync.Mutex
+	processMut sync.RWMutex
 }
 
 func (a *OKWSAgent) Start(config *Config) error {
@@ -105,7 +105,7 @@ func (a *OKWSAgent) Start(config *Config) error {
 	return nil
 }
 
-var wsLimiter = limiter.Limiter{Limit: 50, PeriodMillisecond: 1_000}
+var wsLimiter = limiter.Limiter{Limit: 40, PeriodMillisecond: 1_000}
 
 func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) error {
 	a.processMut.Lock()
@@ -293,6 +293,9 @@ func (a *OKWSAgent) handleTableResponse(r interface{}) error {
 		}
 	}
 
+	a.processMut.RLock()
+	defer a.processMut.RUnlock()
+
 	cbs := a.subMap[tb]
 	if cbs != nil {
 		for i := 0; i < len(cbs); i++ {
@@ -313,10 +316,11 @@ func (a *OKWSAgent) work() {
 		}
 	}()
 
-	defer a.Stop()
-
-	ticker := time.NewTicker(29 * time.Second)
-	defer ticker.Stop()
+	ticker := time.NewTicker(25 * time.Second)
+	defer func() {
+		_ = a.Stop()
+		ticker.Stop()
+	}()
 
 	for {
 		select {
