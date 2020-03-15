@@ -93,6 +93,10 @@ const (
 	OrderSideSell OrderSide = "sell"
 )
 
+func (o OrderSide) IsBuy() bool {
+	return o == OrderSideBuy
+}
+
 type OrderType string
 const (
 	OrderTypeLimit  OrderType = "limit"
