@@ -62,7 +62,7 @@ type SpotInstrumentsTickerList []*SpotInstrumentTicker
 type SpotAccountBalance struct {
 	Frozen    decimal.Decimal `json:"frozen"`
 	Hold      decimal.Decimal `json:"hold"` // Amount on hold (not available)
-	AccountID int64           `json:"id"`
+	AccountID string          `json:"id"`
 	Currency  string          `json:"currency"`
 	Balance   decimal.Decimal `json:"balance"` // Remaining balance
 	Available decimal.Decimal `json:"available"` // Available amount
