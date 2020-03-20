@@ -3,6 +3,7 @@ package okex
 import (
 	"strconv"
 	"time"
+	"encoding/json"
 
 	"github.com/shopspring/decimal"
 	"github.com/darkfoxs96/golimiter/limiter"
@@ -178,9 +179,9 @@ const (
 )
 
 type WSEvent struct {
-	Table  WSEventTable  `json:"table"`
-	Action WSEventAction `json:"action"`
-	Data   []byte        `json:"data"`
+	Table  WSEventTable    `json:"table"`
+	Action WSEventAction   `json:"action"`
+	Data   json.RawMessage `json:"data"`
 }
 
 type UserOrdersWS struct {
