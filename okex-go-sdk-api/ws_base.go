@@ -318,6 +318,24 @@ func loadResponse(rspMsg []byte) (interface{}, error) {
 			if err == nil && dtr.Valid() {
 				return &dtr, nil
 			}
+		} else if tr.Table == "spot/account" {
+			atr := UserSpotAccountWS{
+				Table:  WSEventTable(tr.Table),
+			}
+
+			err = JsonBytes2Struct(tr.Data, &atr.Data)
+			if err == nil {
+				return &atr, nil
+			}
+		} else if tr.Table == "spot/order" {
+			atr := UserOrdersWS{
+				Table:  WSEventTable(tr.Table),
+			}
+
+			err = JsonBytes2Struct(tr.Data, &atr.Data)
+			if err == nil {
+				return &atr, nil
+			}
 		}
 
 		return &tr, nil

@@ -296,6 +296,12 @@ func (a *OKWSAgent) handleTableResponse(r interface{}) error {
 	switch r.(type) {
 	case *WSTableResponse:
 		tb = r.(*WSTableResponse).Table
+	case *UserSpotAccountWS:
+		v := r.(*UserSpotAccountWS)
+		tb = string(v.Table) + ":" + v.Data[0].Currency
+	case *UserOrdersWS:
+		v := r.(*UserOrdersWS)
+		tb = string(v.Table) + ":" + v.Data[0].Pair
 	case *WSDepthTableResponse:
 		v := r.(*WSDepthTableResponse)
 		if len(v.Data) > 0 {
@@ -428,6 +434,12 @@ func (a *OKWSAgent) receive() {
 
 		case *WSTableResponse:
 			tb := rsp.(*WSTableResponse)
+			a.wsTbCh <- tb
+		case *UserSpotAccountWS:
+			tb := rsp.(*UserSpotAccountWS)
+			a.wsTbCh <- tb
+		case *UserOrdersWS:
+			tb := rsp.(*UserOrdersWS)
 			a.wsTbCh <- tb
 		default:
 			//log.Println(rsp)
