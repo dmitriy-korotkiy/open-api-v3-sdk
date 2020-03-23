@@ -287,6 +287,9 @@ func (a *OKWSAgent) handleEventResponse(r interface{}) error {
 	}
 
 	er := r.(*WSEventResponse)
+
+	a.processMut.Lock()
+	defer a.processMut.Unlock()
 	a.activeChannels[er.Channel] = (er.Event == CHNL_EVENT_SUBSCRIBE)
 	return nil
 }
