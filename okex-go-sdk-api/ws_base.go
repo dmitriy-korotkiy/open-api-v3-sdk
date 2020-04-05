@@ -369,8 +369,9 @@ func defaultPrintData(obj interface{}) error {
 			fmt.Println(err.Error())
 			return err
 		}
-		fmt.Println("okex.defaultPrintData:default", msg)
-
+		if msg != "null" {
+			fmt.Println("okex.defaultPrintData:default", msg)
+		}
 	}
 	return nil
 }
