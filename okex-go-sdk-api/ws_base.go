@@ -362,14 +362,14 @@ type ReceivedDataCallback func(interface{}) error
 func defaultPrintData(obj interface{}) error {
 	switch obj.(type) {
 	case string:
-		fmt.Println(obj)
+		fmt.Println("okex.defaultPrintData:string", obj)
 	default:
 		msg, err := Struct2JsonString(obj)
 		if err != nil {
 			fmt.Println(err.Error())
 			return err
 		}
-		fmt.Println(msg)
+		fmt.Println("okex.defaultPrintData:default", msg)
 
 	}
 	return nil

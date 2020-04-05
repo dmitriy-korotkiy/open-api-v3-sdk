@@ -301,16 +301,24 @@ func (a *OKWSAgent) handleTableResponse(r interface{}) error {
 		tb = r.(*WSTableResponse).Table
 	case *UserSpotAccountWS:
 		v := r.(*UserSpotAccountWS)
-		tb = string(v.Table) + ":" + v.Data[0].Currency
+		if len(v.Data) > 0 {
+			tb = string(v.Table) + ":" + v.Data[0].Currency
+		} else {
+			return fmt.Errorf("handleTableResponse() !(len(UserSpotAccountWS.Data) > 0)")
+		}
 	case *UserOrdersWS:
 		v := r.(*UserOrdersWS)
-		tb = string(v.Table) + ":" + v.Data[0].Pair
+		if len(v.Data) > 0 {
+			tb = string(v.Table) + ":" + v.Data[0].Pair
+		} else {
+			return fmt.Errorf("handleTableResponse() !(len(UserOrdersWS.Data) > 0)")
+		}
 	case *WSDepthTableResponse:
 		v := r.(*WSDepthTableResponse)
 		if len(v.Data) > 0 {
 			tb = v.Table + ":" + v.Data[0].InstrumentId
 		} else {
-			return fmt.Errorf("handleTableResponse() !(len(v.Data) > 0)")
+			return fmt.Errorf("handleTableResponse() !(len(WSDepthTableResponse.Data) > 0)")
 		}
 	}
 
