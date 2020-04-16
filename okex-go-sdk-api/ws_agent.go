@@ -239,8 +239,12 @@ func (a *OKWSAgent) Stop() error {
 
 func (a *OKWSAgent) finalize() error {
 	defer func() {
-		if a.config.IsPrint {
-			log.Printf("Finalize End. Connection to WebSocket is closed.")
+		r := recover()
+
+		if r != nil {
+			log.Println("Finalize End. Connection to WebSocket is closed.\n", r)
+		} else if a.config.IsPrint {
+			log.Println("Finalize End. Connection to WebSocket is closed.", r)
 		}
 	}()
 
