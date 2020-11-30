@@ -1,12 +1,12 @@
 package okex
 
 import (
+	"encoding/json"
 	"strconv"
 	"time"
-	"encoding/json"
 
-	"github.com/shopspring/decimal"
 	"github.com/darkfoxs96/golimiter/limiter"
+	"github.com/shopspring/decimal"
 )
 
 type SpotInstrument struct {
@@ -21,10 +21,12 @@ type SpotInstrument struct {
 type SpotInstrumentsList []*SpotInstrument
 
 type BoolNum string
+
 const (
 	BoolNumTrue  = "1"
 	BoolNumFalse = "0"
 )
+
 func (b BoolNum) IsTrue() bool {
 	return b == BoolNumTrue
 }
@@ -65,9 +67,9 @@ type SpotAccountBalance struct {
 	Hold      decimal.Decimal `json:"hold"` // Amount on hold (not available)
 	AccountID string          `json:"id"`
 	Currency  string          `json:"currency"`
-	Balance   decimal.Decimal `json:"balance"` // Remaining balance
+	Balance   decimal.Decimal `json:"balance"`   // Remaining balance
 	Available decimal.Decimal `json:"available"` // Available amount
-	Holds     decimal.Decimal `json:"holds"` // TODO ?
+	Holds     decimal.Decimal `json:"holds"`     // TODO ?
 }
 
 type SpotAccountBalancesList []*SpotAccountBalance
@@ -89,6 +91,7 @@ type SpotCancelOrderResponse struct {
 }
 
 type OrderSide string
+
 const (
 	OrderSideBuy  OrderSide = "buy"
 	OrderSideSell OrderSide = "sell"
@@ -99,28 +102,31 @@ func (o OrderSide) IsBuy() bool {
 }
 
 type OrderType string
+
 const (
 	OrderTypeLimit  OrderType = "limit"
 	OrderTypeMarket OrderType = "market"
 )
 
 type OrderStrategy string
+
 const (
 	OrderStrategyNormal   OrderStrategy = "0"
 	OrderStrategyPostOnly OrderStrategy = "1"
-	OrderStrategyFOK 	  OrderStrategy = "2"
-	OrderStrategyIOC 	  OrderStrategy = "3"
+	OrderStrategyFOK      OrderStrategy = "2"
+	OrderStrategyIOC      OrderStrategy = "3"
 )
 
 type OrderStatus string
+
 const (
-	OrderStatusFailed   	   OrderStatus = "-2"
-	OrderStatusCanceled   	   OrderStatus = "-1"
-	OrderStatusOpen   		   OrderStatus = "0"
+	OrderStatusFailed          OrderStatus = "-2"
+	OrderStatusCanceled        OrderStatus = "-1"
+	OrderStatusOpen            OrderStatus = "0"
 	OrderStatusPartiallyFilled OrderStatus = "1"
-	OrderStatusFullyFilled 	   OrderStatus = "2"
-	OrderStatusSubmitting 	   OrderStatus = "3"
-	OrderStatusCanceling 	   OrderStatus = "4"
+	OrderStatusFullyFilled     OrderStatus = "2"
+	OrderStatusSubmitting      OrderStatus = "3"
+	OrderStatusCanceling       OrderStatus = "4"
 )
 
 type Order struct {
@@ -166,13 +172,15 @@ type OrderUpdateWS struct {
 }
 
 type WSEventTable string
+
 const (
-	WSEventTableSpotOrder 	WSEventTable = "spot/order"
+	WSEventTableSpotOrder   WSEventTable = "spot/order"
 	WSEventTableSpotAccount WSEventTable = "spot/account"
-	WSEventTableSpotDepth 	WSEventTable = "spot/depth"
+	WSEventTableSpotDepth   WSEventTable = "spot/depth"
 )
 
 type WSEventAction string
+
 const (
 	WSEventActionPartial WSEventAction = "partial"
 	WSEventActionUpdate  WSEventAction = "update"
@@ -216,15 +224,15 @@ type Depth400Data struct {
 
 var ( // LIMIT
 	spotAccountListLimit  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	spotTickersLimit	  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	spotTickersLimit      = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
 	spotInstrumentsLimit  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	accountCurrencyLimit  = &limiter.Limiter{Limit: 3,  PeriodMillisecond: 1_200}
-	spotPlaceOrderLimit	  = &limiter.Limiter{Limit: 50, PeriodMillisecond: 1_200}
+	accountCurrencyLimit  = &limiter.Limiter{Limit: 3, PeriodMillisecond: 1_200}
+	spotPlaceOrderLimit   = &limiter.Limiter{Limit: 50, PeriodMillisecond: 1_200}
 	spotCancelOrderLimit  = &limiter.Limiter{Limit: 50, PeriodMillisecond: 1_200}
-	spotOrderListLimit	  = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
+	spotOrderListLimit    = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
 	spotOrderDetailsLimit = &limiter.Limiter{Limit: 10, PeriodMillisecond: 1_200}
-	spotTradeFeeLimit 	  = &limiter.Limiter{Limit: 1,  PeriodMillisecond: 11_000}
-	withdrawalFeeLimit    = &limiter.Limiter{Limit: 5,  PeriodMillisecond: 1_200}
+	spotTradeFeeLimit     = &limiter.Limiter{Limit: 1, PeriodMillisecond: 11_000}
+	withdrawalFeeLimit    = &limiter.Limiter{Limit: 5, PeriodMillisecond: 1_200}
 )
 
 func (client *Client) LimitedGetSpotAccounts() (SpotAccountBalancesList, error) {
@@ -300,7 +308,7 @@ func (client *Client) LimitedGetAllSpotOrders(status OrderStatus, pair string) (
 			break
 		}
 
-		afterID = data[len(data) - 1].OrderID
+		afterID = data[len(data)-1].OrderID
 	}
 
 	return
@@ -392,13 +400,13 @@ func (client *Client) LimitedPostSpotOrders(side OrderSide, orderType OrderType,
 	return r, err
 }
 
-func (client *Client) LimitedGetSpotTradeFee() (*TradeFee, error) {
+func (client *Client) LimitedGetSpotTradeFee(category string) (*TradeFee, error) {
 	r := &TradeFee{}
 	ch := make(chan interface{}, 2)
 	var err error
 
 	spotTradeFeeLimit.Wait(func() {
-		_, err = client.Request(GET, "/api/spot/v3/trade_fee", nil, r)
+		_, err = client.Request(GET, "/api/spot/v3/trade_fee?category="+category, nil, r)
 		ch <- nil
 	})
 
