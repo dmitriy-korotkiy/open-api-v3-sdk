@@ -46,7 +46,7 @@ type OKWSAgent struct {
 }
 
 func (a *OKWSAgent) Start(config *Config) error {
-	a.baseUrl = config.WSEndpoint + "ws/v3?compress=true"
+	//a.baseUrl = config.WSEndpoint + "ws/v3?compress=true"
 	if config.IsPrint {
 		log.Printf("Connecting to %s", a.baseUrl)
 	}
