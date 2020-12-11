@@ -130,6 +130,10 @@ func (client *Client) Request(method string, requestPath string,
 
 	if status >= 200 && status < 300 {
 		if body != nil && result != nil {
+			if requestPath == ACCOUNT_CURRENCIES {
+				body = bytes.ReplaceAll(body, []byte(`min_withdrawal":""`), []byte(`min_withdrawal":"0"`))
+			}
+
 			err := JsonBytes2Struct(body, result)
 			if err != nil {
 				return response, err
