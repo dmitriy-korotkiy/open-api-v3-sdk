@@ -7,59 +7,69 @@ package okex
  @version 1.0.0
 */
 
+//easyjson:json
 type ServerTime struct {
 	Iso   string `json:"iso"`
 	Epoch string `json:"epoch"`
 }
 
+//easyjson:json
 type ExchangeRate struct {
 	InstrumentId string  `json:"instrument_id"`
 	Rate         float64 `json:"rate,string"`
 	Timestamp    string  `json:"timestamp"`
 }
 
+//easyjson:json
 type BizWarmTips struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Msg     string `json:"msg"`
 }
 
-type Result struct {
+//easyjson:json
+type ResultReq struct {
 	Result bool `json:"result"`
 }
 
+//easyjson:json
 type PageResult struct {
 	From  int
 	To    int
 	Limit int
 }
 
+//easyjson:json
 type FuturesPosition struct {
 	BizWarmTips
-	Result
+	Result        bool `json:"result"`
 	MarginMode    string
 	CrossPosition []FuturesCrossPositionHolding
 	FixedPosition []FuturesFixedPositionHolding
 }
 
+//easyjson:json
 type FuturesCrossPosition struct {
-	Result
+	Result        bool                          `json:"result"`
 	MarginMode    string                        `json:"margin_mode"`
 	CrossPosition []FuturesCrossPositionHolding `json:"holding"`
 }
 
+//easyjson:json
 type FuturesFixedPosition struct {
-	Result
+	Result        bool                          `json:"result"`
 	MarginMode    string                        `json:"margin_mode"`
 	FixedPosition []FuturesFixedPositionHolding `json:"holding"`
 }
 
+//easyjson:json
 type FuturesCrossPositionHolding struct {
 	FuturesPositionBase
 	LiquidationPrice float64 `json:"liquidation_price,string"`
 	Leverage         float64 `json:"leverage,string"`
 }
 
+//easyjson:json
 type FuturesFixedPositionHolding struct {
 	FuturesPositionBase
 	LongMargin      float64 `json:"long_margin,string"`
@@ -72,6 +82,7 @@ type FuturesFixedPositionHolding struct {
 	ShortLeverage   float64 `json:"short_leverage,string"`
 }
 
+//easyjson:json
 type FuturesPositionBase struct {
 	LongQty              float64 `json:"long_qty,string"`
 	LongAvailQty         float64 `json:"long_avail_qty,string"`
@@ -87,14 +98,16 @@ type FuturesPositionBase struct {
 	UpdatedAt            string  `json:"updated_at"`
 }
 
+//easyjson:json
 type FuturesAccount struct {
 	BizWarmTips
-	Result
+	Result       bool `json:"result"`
 	MarginMode   string
 	CrossAccount map[string]FuturesCrossAccount
 	FixedAccount map[string]FuturesFixedAccount
 }
 
+//easyjson:json
 type FuturesMarkdown struct {
 	BizWarmTips
 	InstrumentId string `json:"instrument_id"`
@@ -102,16 +115,19 @@ type FuturesMarkdown struct {
 	MarkPrice    string `json:"mark_price"`
 }
 
+//easyjson:json
 type FuturesFixedAccountInfo struct {
-	Result
-	Info map[string]FuturesFixedAccount `json:"info"`
+	Result bool                           `json:"result"`
+	Info   map[string]FuturesFixedAccount `json:"info"`
 }
 
+//easyjson:json
 type FuturesCrossAccountInfo struct {
-	Result
-	Info map[string]FuturesCrossAccount `json:"info"`
+	Result bool                           `json:"result"`
+	Info   map[string]FuturesCrossAccount `json:"info"`
 }
 
+//easyjson:json
 type FuturesFixedAccount struct {
 	MarginMode        string                         `json:"margin_mode"`
 	Equity            float64                        `json:"equity,string"`
@@ -119,6 +135,7 @@ type FuturesFixedAccount struct {
 	Contracts         []FuturesFixedAccountContracts `json:"contracts"`
 }
 
+//easyjson:json
 type FuturesFixedAccountContracts struct {
 	AvailableQty      float64 `json:"available_qty,string"`
 	FixedBalance      float64 `json:"fixed_balance,string"`
@@ -130,6 +147,7 @@ type FuturesFixedAccountContracts struct {
 	UnrealizedPnl     float64 `json:"unrealizedPnl,string"`
 }
 
+//easyjson:json
 type FuturesCrossAccount struct {
 	Equity            float64 `json:"equity,string"`
 	Margin            float64 `json:"margin,string"`
@@ -140,14 +158,16 @@ type FuturesCrossAccount struct {
 	TotalAvailBalance float64 `json:"total_avail_balance,string"`
 }
 
+//easyjson:json
 type FuturesCurrencyAccount struct {
 	BizWarmTips
-	Result
+	Result       bool `json:"result"`
 	MarginMode   string
 	CrossAccount FuturesCrossAccount
 	FixedAccount FuturesFixedAccount
 }
 
+//easyjson:json
 type FuturesCurrencyLedger struct {
 	LedgerId  int64                        `json:"ledger_id,string"`
 	Amount    float64                      `json:"amount,string"`
@@ -158,29 +178,34 @@ type FuturesCurrencyLedger struct {
 	Details   FuturesCurrencyLedgerDetails `json:"details"`
 }
 
+//easyjson:json
 type FuturesCurrencyLedgerDetails struct {
 	OrderId      int64  `json:"order_id"`
 	InstrumentId string `json:"instrument_id"`
 }
 
+//easyjson:json
 type FuturesAccountsHolds struct {
 	InstrumentId string  `json:"instrument_id"`
 	Amount       float64 `json:"amount,string"`
 	Timestamp    string  `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesNewOrderResult struct {
 	BizWarmTips
-	Result
+	Result    bool   `json:"result"`
 	ClientOid string `json:"client_oid"`
 	OrderId   int64  `json:"order_id,string"`
 }
 
+//easyjson:json
 type FuturesBatchNewOrderResult struct {
-	Result
+	Result    bool        `json:"result"`
 	OrderInfo []OrderInfo `json:"order_info"`
 }
 
+//easyjson:json
 type CodeMessage struct {
 	ErrorCode    int64  `json:"error_code"`
 	ErrorMessage string `json:"error_message"`
@@ -189,39 +214,46 @@ type CodeMessage struct {
 /*
   If OrderId = -1, ErrorCode > 0, error order
 */
+//easyjson:json
 type OrderInfo struct {
 	ClientOid string `json:"client_oid"`
 	OrderId   string `json:"order_id"`
 	CodeMessage
 }
 
+//easyjson:json
 type FuturesCancelInstrumentOrderResult struct {
-	Result
+	Result       bool   `json:"result"`
 	OrderId      string `json:"order_id"`
 	InstrumentId string `json:"instrument_id"`
 }
 
+//easyjson:json
 type FuturesBatchCancelInstrumentOrdersResult struct {
-	Result
+	Result       bool     `json:"result"`
 	OrderIds     []string `json:"order_ids"`
 	InstrumentId string   `json:"instrument_id"`
 }
 
+//easyjson:json
 type FuturesClosePositionResult struct {
-	Result
+	Result            bool                `json:"result"`
 	ClosePositionInfo []ClosePositionInfo `json:"close_position_info"`
 }
 
+//easyjson:json
 type ClosePositionInfo struct {
 	InstrumentId string `json:"instrument_id"`
 	CodeMessage
 }
 
+//easyjson:json
 type FuturesGetOrdersResult struct {
-	Result
+	Result bool                    `json:"result"`
 	Orders []FuturesGetOrderResult `json:"order_info"`
 }
 
+//easyjson:json
 type FuturesGetOrderResult struct {
 	InstrumentId string  `json:"instrument_id"`
 	Size         int64   `json:"size,string"`
@@ -237,6 +269,7 @@ type FuturesGetOrderResult struct {
 	Leverage     float64 `json:"leverage,string"`
 }
 
+//easyjson:json
 type FuturesFillResult struct {
 	TradeId      int64   `json:"trade_id,string"`
 	InstrumentId string  `json:"instrument_id"`
@@ -249,10 +282,12 @@ type FuturesFillResult struct {
 	Side         string  `json:"side"`
 }
 
+//easyjson:json
 type FuturesUsersSelfTrailingVolumesResult struct {
 	FuturesUsersSelfTrailingVolumeResult []FuturesUsersSelfTrailingVolumeResult
 }
 
+//easyjson:json
 type FuturesUsersSelfTrailingVolumeResult struct {
 	InstrumentId   string  `json:"instrument_id"`
 	ExchangeVolume float64 `json:"exchange_volume,string"`
@@ -260,6 +295,7 @@ type FuturesUsersSelfTrailingVolumeResult struct {
 	RecordedAt     string  `json:"recorded_at"`
 }
 
+//easyjson:json
 type FuturesInstrumentsResult struct {
 	InstrumentId    string  `json:"instrument_id"`
 	UnderlyingIndex string  `json:"underlying_index"`
@@ -271,18 +307,21 @@ type FuturesInstrumentsResult struct {
 	TradeIncrement  float64 `json:"trade_increment,string"`
 }
 
+//easyjson:json
 type FuturesInstrumentCurrenciesResult struct {
 	Id      int64   `json:"id,string"`
 	Name    string  `json:"name"`
 	MinSize float64 `json:"min_size,string"`
 }
 
+//easyjson:json
 type FuturesInstrumentBookResult struct {
 	Asks      [][]string `json:"asks,string"`
 	Bids      [][]string `json:"bids,string"`
 	Timestamp string     `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesInstrumentTickerResult struct {
 	InstrumentId string  `json:"instrument_id"`
 	BestBid      float64 `json:"best_bid,string"`
@@ -294,6 +333,7 @@ type FuturesInstrumentTickerResult struct {
 	Timestamp    string  `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesInstrumentTradesResult struct {
 	TradeId   string  `json:"trade_id"`
 	Side      string  `json:"side"`
@@ -302,24 +342,28 @@ type FuturesInstrumentTradesResult struct {
 	Timestamp string  `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesInstrumentIndexResult struct {
 	InstrumentId string  `json:"instrument_id"`
 	Index        float64 `json:"index,string"`
 	Timestamp    string  `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesInstrumentEstimatedPriceResult struct {
 	InstrumentId    string  `json:"instrument_id"`
 	SettlementPrice float64 `json:"settlement_price,string"`
 	Timestamp       string  `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesInstrumentOpenInterestResult struct {
 	InstrumentId string `json:"instrument_id"`
 	Amount       int64  `json:"amount,string"`
 	Timestamp    string `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesInstrumentPriceLimitResult struct {
 	InstrumentId string  `json:"instrument_id"`
 	Highest      float64 `json:"highest,string"`
@@ -327,11 +371,13 @@ type FuturesInstrumentPriceLimitResult struct {
 	Timestamp    string  `json:"timestamp"`
 }
 
+//easyjson:json
 type FuturesInstrumentLiquidationListResult struct {
 	Page            PageResult
 	LiquidationList []FuturesInstrumentLiquidationResult
 }
 
+//easyjson:json
 type FuturesInstrumentLiquidationResult struct {
 	InstrumentId string `json:"instrument_id"`
 	Price        string `json:"price"`

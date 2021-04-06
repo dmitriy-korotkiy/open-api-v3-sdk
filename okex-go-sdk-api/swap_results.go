@@ -7,6 +7,7 @@ package okex
  @version 1.0.0
 */
 
+//easyjson:json
 type SwapPositionHolding struct {
 	LiquidationPrice string `json:"liquidation_price"`
 	Position         string `json:"position"`
@@ -21,14 +22,17 @@ type SwapPositionHolding struct {
 	Margin           string `json:"margin";default:""`
 }
 
+//easyjson:json
 type SwapPosition struct {
 	BizWarmTips
 	MarginMode string                `json:"margin_mode"`
 	Holding    []SwapPositionHolding `json:"holding"`
 }
 
+//easyjson:json
 type SwapPositionList []SwapPosition
 
+//easyjson:json
 type SwapAccountInfo struct {
 	InstrumentId      string `json:"instrument_id"`
 	Timestamp         string `json:"timestamp"`
@@ -43,15 +47,18 @@ type SwapAccountInfo struct {
 	MarginMode        string `json:"margin_mode"`
 }
 
+//easyjson:json
 type SwapAccounts struct {
 	BizWarmTips
 	Info []SwapAccountInfo `json:"info"`
 }
 
+//easyjson:json
 type SwapAccount struct {
 	Info SwapAccountInfo `json:"info"`
 }
 
+//easyjson:json
 type BaseSwapOrderResult struct {
 	OrderId      string `json:"order_id"`
 	ClientOid    string `json:"client_oid"`
@@ -60,16 +67,19 @@ type BaseSwapOrderResult struct {
 	Result       string `json:"result"`
 }
 
+//easyjson:json
 type SwapOrderResult struct {
 	BaseSwapOrderResult
 	BizWarmTips
 }
 
+//easyjson:json
 type SwapOrdersResult struct {
 	BizWarmTips
 	OrderInfo []BaseSwapOrderResult `json:"order_info"`
 }
 
+//easyjson:json
 type SwapCancelOrderResult struct {
 	ErrorMessage string `json:"error_message"`
 	ErrorCode    string `json:"error_code"`
@@ -77,6 +87,7 @@ type SwapCancelOrderResult struct {
 	Result       string `json:"result"`
 }
 
+//easyjson:json
 type SwapBatchCancelOrderResult struct {
 	BizWarmTips
 	InstrumentId string   `json:"instrument_id"`
@@ -84,6 +95,7 @@ type SwapBatchCancelOrderResult struct {
 	Result       string   `json:"result"`
 }
 
+//easyjson:json
 type BaseOrderInfo struct {
 	InstrumentId string `json:"instrument_id"`
 	Status       string `json:"status"`
@@ -98,11 +110,13 @@ type BaseOrderInfo struct {
 	Type         string `json:"type"`
 }
 
+//easyjson:json
 type SwapOrdersInfo struct {
 	BizWarmTips
 	OrderInfo []BaseOrderInfo `json:"order_info"`
 }
 
+//easyjson:json
 type BaseFillInfo struct {
 	InstrumentId string `json:"instrument_id"`
 	OrderQty     string `json:"order_qty"`
@@ -115,8 +129,10 @@ type BaseFillInfo struct {
 	ExecType     string `json:"exec_type"`
 }
 
+//easyjson:json
 type SwapFillsInfo []BaseFillInfo
 
+//easyjson:json
 type SwapAccountsSetting struct {
 	BizWarmTips
 	InstrumentId  string `json:"instrument_id"`
@@ -125,6 +141,7 @@ type SwapAccountsSetting struct {
 	MarginMode    string `json:"margin_mode"`
 }
 
+//easyjson:json
 type BaseLedgerInfo struct {
 	InstrumentId string `json:"instrument_id"`
 	Fee          string `json:"fee"`
@@ -134,8 +151,10 @@ type BaseLedgerInfo struct {
 	Type         string `json:"type"`
 }
 
+//easyjson:json
 type SwapAccountsLedgerList []BaseLedgerInfo
 
+//easyjson:json
 type BaseInstrumentInfo struct {
 	InstrumentId    string `json:"instrument_id"`
 	QuoteCurrency   string `json:"quote_currency"`
@@ -148,9 +167,12 @@ type BaseInstrumentInfo struct {
 	SizeIncrement   string `json:"size_increment"`
 }
 
+//easyjson:json
 type SwapInstrumentList []BaseInstrumentInfo
 
 type BaesDepthInfo []interface{}
+
+//easyjson:json
 type SwapInstrumentDepth struct {
 	BizWarmTips
 	Timestamp string          `json:"timestamp"`
@@ -159,6 +181,7 @@ type SwapInstrumentDepth struct {
 	Asks      []BaesDepthInfo `json:"asks"`
 }
 
+//easyjson:json
 type BaseTickerInfo struct {
 	InstrumentId string `json:"instrument_id"`
 	Last         string `json:"last"`
@@ -168,8 +191,10 @@ type BaseTickerInfo struct {
 	Low24h       string `json:"low_24h"`
 }
 
+//easyjson:json
 type SwapTickerList []BaseTickerInfo
 
+//easyjson:json
 type BaseTradeInfo struct {
 	Timestamp string `json:"timestamp"`
 	TradeId   string `json:"trade_id"`
@@ -178,11 +203,13 @@ type BaseTradeInfo struct {
 	Size      string `json:"size"`
 }
 
+//easyjson:json
 type SwapTradeList []BaseTradeInfo
 
 type BaseCandleInfo []interface{}
 type SwapCandleList []BaseCandleInfo
 
+//easyjson:json
 type SwapIndexInfo struct {
 	BizWarmTips
 	InstrumentId string `json:"instrument_id"`
@@ -190,12 +217,14 @@ type SwapIndexInfo struct {
 	Timestamp    string `json:"timestamp"`
 }
 
+//easyjson:json
 type SwapRate struct {
 	InstrumentId string `json:"instrument_id"`
 	Timestamp    string `json:"timestamp"`
 	Rate         string `json:"rate"`
 }
 
+//easyjson:json
 type BaseInstrumentAmount struct {
 	BizWarmTips
 	InstrumentId string `json:"instrument_id"`
@@ -205,6 +234,7 @@ type BaseInstrumentAmount struct {
 
 type SwapOpenInterest BaseInstrumentAmount
 
+//easyjson:json
 type SwapPriceLimit struct {
 	BizWarmTips
 	InstrumentId string `json:"instrument_id"`
@@ -213,6 +243,7 @@ type SwapPriceLimit struct {
 	Timestamp    string `json:"timestamp"`
 }
 
+//easyjson:json
 type BaseLiquidationInfo struct {
 	InstrumentId string `json:"instrument_id"`
 	Loss         string `json:"loss"`
@@ -222,16 +253,19 @@ type BaseLiquidationInfo struct {
 	Size         string `json:"size"`
 }
 
+//easyjson:json
 type SwapLiquidationList []BaseLiquidationInfo
 
 type SwapAccountHolds BaseInstrumentAmount
 
+//easyjson:json
 type SwapFundingTime struct {
 	BizWarmTips
 	InstrumentId string `json:"instrument_id"`
 	FundingTime  string `json:"funding_time"`
 }
 
+//easyjson:json
 type SwapMarkPrice struct {
 	BizWarmTips
 	InstrumentId string `json:"instrument_id"`
@@ -239,6 +273,7 @@ type SwapMarkPrice struct {
 	Timestamp    string `json:"timestamp"`
 }
 
+//easyjson:json
 type BaseHistoricalFundingRate struct {
 	InstrumentId string `json:"instrument_id"`
 	InterestRate string `json:"interest_rate"`
@@ -247,4 +282,5 @@ type BaseHistoricalFundingRate struct {
 	RealizedRate string `json:"realized_rate"`
 }
 
+//easyjson:json
 type SwapHistoricalFundingRateList []BaseHistoricalFundingRate

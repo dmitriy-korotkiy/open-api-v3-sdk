@@ -22,6 +22,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/mailru/easyjson"
 )
 
 /*
@@ -84,6 +86,11 @@ func Int642String(arg int64) string {
 */
 func JsonString2Struct(jsonString string, result interface{}) error {
 	jsonBytes := []byte(jsonString)
+
+	if ej, ok := result.(easyjson.Unmarshaler); ok {
+		return easyjson.Unmarshal(jsonBytes, ej)
+	}
+
 	err := json.Unmarshal(jsonBytes, result)
 	return err
 }
@@ -92,6 +99,10 @@ func JsonString2Struct(jsonString string, result interface{}) error {
   json byte array convert struct
 */
 func JsonBytes2Struct(jsonBytes []byte, result interface{}) error {
+	if ej, ok := result.(easyjson.Unmarshaler); ok {
+		return easyjson.Unmarshal(jsonBytes, ej)
+	}
+
 	err := json.Unmarshal(jsonBytes, result)
 	return err
 }
@@ -100,6 +111,15 @@ func JsonBytes2Struct(jsonBytes []byte, result interface{}) error {
  struct convert json string
 */
 func Struct2JsonString(structt interface{}) (jsonString string, err error) {
+	if ej, ok := structt.(easyjson.Marshaler); ok {
+		data, err := easyjson.Marshal(ej)
+		if err != nil {
+			return "", err
+		}
+
+		return string(data), nil
+	}
+
 	data, err := json.Marshal(structt)
 	if err != nil {
 		return "", err

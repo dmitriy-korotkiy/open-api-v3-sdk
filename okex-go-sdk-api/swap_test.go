@@ -70,19 +70,19 @@ func TestClient_PublicAPI(t *testing.T) {
 	fmt.Printf("%+v", histList)
 
 	r, err := c.GetSwapMarkPriceByInstrument(instrumentId)
-	fmt.Printf("Result: %+v, Error: %+v", r, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r, err)
 	assert.True(t, r != nil && err == nil)
 
 	r1, err := c.GetSwapFundingTimeByInstrument(instrumentId)
-	fmt.Printf("Result: %+v, Error: %+v", r1, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r1, err)
 	assert.True(t, r1 != nil && err == nil)
 
 	r2, err := c.GetSwapAccountsHoldsByInstrument(instrumentId)
-	fmt.Printf("Result: %+v, Error: %+v", r2, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r2, err)
 	assert.True(t, r2 != nil && err == nil)
 
 	r3, err := c.GetSwapLiquidationByInstrument(instrumentId, "1", nil)
-	fmt.Printf("Result: %+v, Error: %+v", r3, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r3, err)
 	assert.True(t, r3 != nil && err == nil)
 
 	optionalParams := map[string]string{}
@@ -91,40 +91,40 @@ func TestClient_PublicAPI(t *testing.T) {
 	optionalParams["limit"] = "50"
 
 	r4, err := c.GetSwapLiquidationByInstrument(instrumentId, "0", optionalParams)
-	fmt.Printf("Result: %+v, Error: %+v", r4, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r4, err)
 	assert.True(t, r4 != nil && err == nil)
 
 	r5, err := c.GetSwapPriceLimitByInstrument(instrumentId)
-	fmt.Printf("Result: %+v, Error: %+v", r5, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r5, err)
 	assert.True(t, r5 != nil && err == nil)
 
 	r6, err := c.GetSwapOpenInterestByInstrument(instrumentId)
-	fmt.Printf("Result: %+v, Error: %+v", r6, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r6, err)
 	assert.True(t, r6 != nil && err == nil)
 
 	r7, err := c.GetSwapIndexByInstrument(instrumentId)
-	fmt.Printf("Result: %+v, Error: %+v", r7, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r7, err)
 	assert.True(t, r7 != nil && err == nil)
 
 	//lingting.fu. 20190225. No Kline in test enviroment, contact LiWei to solve env problem.
 	//r8, err := c.GetSwapCandlesByInstrument(instrumentId, nil)
-	//fmt.Printf("Result: %+v, Error: %+v", r8, err)
+	//fmt.Printf("ResultReq: %+v, Error: %+v", r8, err)
 	//assert.True(t, r8 != nil && err == nil)
 
 	r9, err := c.GetSwapTradesByInstrument(instrumentId, nil)
-	fmt.Printf("Result: %+v, Error: %+v", r9, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r9, err)
 	assert.True(t, r9 != nil && err == nil)
 
 	r10, err := c.GetSwapTickerByInstrument(instrumentId)
-	fmt.Printf("Result: %+v, Error: %+v", r10, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r10, err)
 	assert.True(t, r10 != nil && err == nil)
 
 	r11, err := c.GetSwapInstruments()
-	fmt.Printf("Result: %+v, Error: %+v", r11, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r11, err)
 	assert.True(t, r11 != nil && err == nil)
 
 	r12, err := c.GetSwapRate()
-	fmt.Printf("Result: %+v, Error: %+v", r12, err)
+	fmt.Printf("ResultReq: %+v, Error: %+v", r12, err)
 	assert.True(t, r12 != nil && err == nil)
 
 	r13, err := c.GetSwapInstrumentsTicker()
@@ -137,7 +137,7 @@ func TestClient_PublicAPI(t *testing.T) {
 
 func simpleAssertTrue(result interface{}, err error, t *testing.T, doprint bool) bool {
 	if doprint {
-		fmt.Fprintf(os.Stderr, "Result: %+v, Error: %+v", result, err)
+		fmt.Fprintf(os.Stderr, "ResultReq: %+v, Error: %+v", result, err)
 	}
 	require.True(t, result != nil, result)
 	require.True(t, err == nil, err)

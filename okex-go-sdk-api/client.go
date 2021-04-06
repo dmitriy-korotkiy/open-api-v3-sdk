@@ -23,6 +23,7 @@ type Client struct {
 	HttpClient *http.Client
 }
 
+//easyjson:json
 type ApiMessage struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`

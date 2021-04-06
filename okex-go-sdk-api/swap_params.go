@@ -7,6 +7,7 @@ package okex
  @version 1.0.0
 */
 
+//easyjson:json
 type BasePlaceOrderInfo struct {
 	ClientOid  string `json:"client_oid"`
 	Price      string `json:"price"`
@@ -15,11 +16,13 @@ type BasePlaceOrderInfo struct {
 	Size       string `json:"size"`
 }
 
+//easyjson:json
 type PlaceOrderInfo struct {
 	BasePlaceOrderInfo
 	InstrumentId string `json:"instrument_id"`
 }
 
+//easyjson:json
 type PlaceOrdersInfo struct {
 	InstrumentId string                `json:"instrument_id"`
 	OrderData    []*BasePlaceOrderInfo `json:"order_data"`

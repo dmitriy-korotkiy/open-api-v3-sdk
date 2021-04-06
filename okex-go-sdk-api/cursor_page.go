@@ -17,6 +17,7 @@ type CursorPage struct {
 	Limit int
 }
 
+//easyjson:json
 type PagingResult struct {
 	ResultItems  []map[string]string
 	CursorBefore string

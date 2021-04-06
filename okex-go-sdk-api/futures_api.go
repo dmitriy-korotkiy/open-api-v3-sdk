@@ -304,8 +304,8 @@ func (c *Client) GetInstrumentMarkPrice(instrumentId string) (*FuturesMarkdown, 
 //	if err != nil {
 //		return position, err
 //	}
-//	var result Result
-//	result.Result = false
+//	var result ResultReq
+//	result.ResultReq = false
 //	jsonString := GetResponseDataJsonString(response)
 //	if strings.Contains(jsonString, "\"margin_mode\":\"fixed\"") {
 //		var fixedPosition FuturesFixedPosition
@@ -313,7 +313,7 @@ func (c *Client) GetInstrumentMarkPrice(instrumentId string) (*FuturesMarkdown, 
 //		if err != nil {
 //			return position, err
 //		} else {
-//			position.Result = fixedPosition.Result
+//			position.ResultReq = fixedPosition.ResultReq
 //			position.MarginMode = fixedPosition.MarginMode
 //			position.FixedPosition = fixedPosition.FixedPosition
 //		}
@@ -323,15 +323,15 @@ func (c *Client) GetInstrumentMarkPrice(instrumentId string) (*FuturesMarkdown, 
 //		if err != nil {
 //			return position, err
 //		} else {
-//			position.Result = crossPosition.Result
+//			position.ResultReq = crossPosition.ResultReq
 //			position.MarginMode = crossPosition.MarginMode
 //			position.CrossPosition = crossPosition.CrossPosition
 //		}
 //	} else if strings.Contains(jsonString, "\"code\":") {
 //		JsonString2Struct(jsonString, &position)
-//		position.Result = result
+//		position.ResultReq = result
 //	} else {
-//		position.Result = result
+//		position.ResultReq = result
 //	}
 //
 //	return position, nil
@@ -342,8 +342,8 @@ func (c *Client) GetInstrumentMarkPrice(instrumentId string) (*FuturesMarkdown, 
 //	if err != nil {
 //		return account, err
 //	}
-//	var result Result
-//	result.Result = false
+//	var result ResultReq
+//	result.ResultReq = false
 //	jsonString := GetResponseDataJsonString(response)
 //	if strings.Contains(jsonString, "\"contracts\"") {
 //		var fixedAccount FuturesFixedAccountInfo
@@ -351,7 +351,7 @@ func (c *Client) GetInstrumentMarkPrice(instrumentId string) (*FuturesMarkdown, 
 //		if err != nil {
 //			return account, err
 //		} else {
-//			account.Result = fixedAccount.Result
+//			account.ResultReq = fixedAccount.ResultReq
 //			account.FixedAccount = fixedAccount.Info
 //			account.MarginMode = "fixed"
 //		}
@@ -361,15 +361,15 @@ func (c *Client) GetInstrumentMarkPrice(instrumentId string) (*FuturesMarkdown, 
 //		if err != nil {
 //			return account, err
 //		} else {
-//			account.Result = crossAccount.Result
+//			account.ResultReq = crossAccount.ResultReq
 //			account.MarginMode = "crossed"
 //			account.CrossAccount = crossAccount.Info
 //		}
 //	} else if strings.Contains(jsonString, "\"code\":") {
 //		JsonString2Struct(jsonString, &account)
-//		account.Result = result
+//		account.ResultReq = result
 //	} else {
-//		account.Result = result
+//		account.ResultReq = result
 //	}
 //	return account, nil
 //}
@@ -380,15 +380,13 @@ func parseCurrencyAccounts(response *http.Response, err error) (FuturesCurrencyA
 		return currencyAccount, err
 	}
 	jsonString := GetResponseDataJsonString(response)
-	var result Result
-	result.Result = true
 	if strings.Contains(jsonString, "\"margin_mode\":\"fixed\"") {
 		var fixedAccount FuturesFixedAccount
 		err = JsonString2Struct(jsonString, &fixedAccount)
 		if err != nil {
 			return currencyAccount, err
 		} else {
-			currencyAccount.Result = result
+			currencyAccount.Result = true
 			currencyAccount.MarginMode = fixedAccount.MarginMode
 			currencyAccount.FixedAccount = fixedAccount
 		}
@@ -398,17 +396,15 @@ func parseCurrencyAccounts(response *http.Response, err error) (FuturesCurrencyA
 		if err != nil {
 			return currencyAccount, err
 		} else {
-			currencyAccount.Result = result
+			currencyAccount.Result = true
 			currencyAccount.MarginMode = crossAccount.MarginMode
 			currencyAccount.CrossAccount = crossAccount
 		}
 	} else if strings.Contains(jsonString, "\"code\":") {
-		result.Result = true
 		JsonString2Struct(jsonString, &currencyAccount)
-		currencyAccount.Result = result
+		currencyAccount.Result = true
 	} else {
-		result.Result = true
-		currencyAccount.Result = result
+		currencyAccount.Result = true
 	}
 	return currencyAccount, nil
 }

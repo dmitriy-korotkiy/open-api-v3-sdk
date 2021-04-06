@@ -9,6 +9,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+//easyjson:json
 type SpotInstrument struct {
 	BaseCurrency  string          `json:"base_currency"`
 	QuoteCurrency string          `json:"quote_currency"` // Main coin
@@ -18,6 +19,7 @@ type SpotInstrument struct {
 	TickSize      decimal.Decimal `json:"tick_size"`
 }
 
+//easyjson:json
 type SpotInstrumentsList []*SpotInstrument
 
 type BoolNum string
@@ -31,6 +33,7 @@ func (b BoolNum) IsTrue() bool {
 	return b == BoolNumTrue
 }
 
+//easyjson:json
 type AccountCurrency struct {
 	CanDeposit    BoolNum         `json:"can_deposit"`  // "1" == true
 	CanWithdraw   BoolNum         `json:"can_withdraw"` // "1" == true
@@ -39,8 +42,10 @@ type AccountCurrency struct {
 	MinWithdrawal decimal.Decimal `json:"min_withdrawal"`
 }
 
+//easyjson:json
 type AccountCurrenciesList []*AccountCurrency
 
+//easyjson:json
 type SpotInstrumentTicker struct {
 	Ask            decimal.Decimal `json:"ask"`
 	Bid            decimal.Decimal `json:"bid"`
@@ -60,8 +65,10 @@ type SpotInstrumentTicker struct {
 	ProductID      string          `json:"product_id"` // TODO instrument_id == product_id ?
 }
 
+//easyjson:json
 type SpotInstrumentsTickerList []*SpotInstrumentTicker
 
+//easyjson:json
 type SpotAccountBalance struct {
 	Frozen    decimal.Decimal `json:"frozen"`
 	Hold      decimal.Decimal `json:"hold"` // Amount on hold (not available)
@@ -72,8 +79,10 @@ type SpotAccountBalance struct {
 	Holds     decimal.Decimal `json:"holds"`     // TODO ?
 }
 
+//easyjson:json
 type SpotAccountBalancesList []*SpotAccountBalance
 
+//easyjson:json
 type SpotOrderResponse struct {
 	OrderID       string `json:"order_id"` // TODO may use like a number?
 	ClientOrderID string `json:"client_oid"`
@@ -82,10 +91,12 @@ type SpotOrderResponse struct {
 	Result        bool   `json:"result"`
 }
 
+//easyjson:json
 type SpotNewOrderResponse struct {
 	*SpotOrderResponse
 }
 
+//easyjson:json
 type SpotCancelOrderResponse struct {
 	*SpotOrderResponse
 }
@@ -129,6 +140,7 @@ const (
 	OrderStatusCanceling       OrderStatus = "4"
 )
 
+//easyjson:json
 type Order struct {
 	OrderID        string          `json:"order_id"` // TODO may use like a number?
 	ClientOrderID  string          `json:"client_oid"`
@@ -146,22 +158,27 @@ type Order struct {
 	Status         OrderStatus     `json:"state"`      // Order Status: -2 = Failed -1 = Canceled 0 = Open 1 = Partially Filled 2 = Fully Filled 3 = Submitting 4 = Canceling
 }
 
+//easyjson:json
 type OrdersList []*Order
 
+//easyjson:json
 type TradeFee struct {
 	Maker     decimal.Decimal `json:"maker"`
 	Taker     decimal.Decimal `json:"taker"`
 	Timestamp time.Time       `json:"timestamp"`
 }
 
+//easyjson:json
 type WithdrawalFee struct {
 	Currency string          `json:"currency"`
 	MaxFee   decimal.Decimal `json:"max_fee"`
 	MinFee   decimal.Decimal `json:"min_fee"`
 }
 
+//easyjson:json
 type WithdrawalFeesList []*WithdrawalFee
 
+//easyjson:json
 type OrderUpdateWS struct {
 	*Order
 	LastFillPrice   decimal.Decimal `json:"last_fill_px"`   // Latest Filled Price. '0' will be returned if the data is empty
@@ -186,34 +203,40 @@ const (
 	WSEventActionUpdate  WSEventAction = "update"
 )
 
+//easyjson:json
 type WSEvent struct {
 	Table  WSEventTable    `json:"table"`
 	Action WSEventAction   `json:"action"`
 	Data   json.RawMessage `json:"data"`
 }
 
+//easyjson:json
 type UserOrdersWS struct {
 	Table WSEventTable     `json:"table"` // WSEventTableSpotOrder
 	Data  []*OrderUpdateWS `json:"data"`
 }
 
+//easyjson:json
 type UserSpotAccountWS struct {
 	Table WSEventTable            `json:"table"` // WSEventTableSpotAccount
 	Data  SpotAccountBalancesList `json:"data"`
 }
 
+//easyjson:json
 type Depth400PartialWS struct {
 	Table  WSEventTable    `json:"table"`  // WSEventTableSpotDepth
 	Action WSEventAction   `json:"action"` // WSEventActionPartial
 	Data   []*Depth400Data `json:"data"`
 }
 
+//easyjson:json
 type Depth400UpdateWS struct {
 	Table  WSEventTable    `json:"table"`  // WSEventTableSpotDepth
 	Action WSEventAction   `json:"action"` // WSEventActionUpdate
 	Data   []*Depth400Data `json:"data"`
 }
 
+//easyjson:json
 type Depth400Data struct {
 	Pair      string               `json:"instrument_id"`
 	Asks      [][3]decimal.Decimal `json:"asks"` // bids and asks value example: In ["411.8","10","8"], 411.8 is price depth, 10 is the amount at the price, 8 is the number of orders at the price.

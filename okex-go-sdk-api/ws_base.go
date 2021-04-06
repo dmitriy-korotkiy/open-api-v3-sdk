@@ -18,6 +18,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+//easyjson:json
 type BaseOp struct {
 	Op   string   `json:"op"`
 	Args []string `json:"args"`
@@ -69,6 +70,7 @@ func loginOp(apiKey string, passphrase string, timestamp string, sign string) (o
 	return &b, nil
 }
 
+//easyjson:json
 type SubscriptionTopic struct {
 	channel string
 	filter  string `default:""`
@@ -86,6 +88,7 @@ func (st *SubscriptionTopic) ToString() (topic string, err error) {
 	}
 }
 
+//easyjson:json
 type WSEventResponse struct {
 	Event   string `json:"event"`
 	Success string `json:success`
@@ -96,6 +99,7 @@ func (r *WSEventResponse) Valid() bool {
 	return (len(r.Event) > 0 && len(r.Channel) > 0) || r.Event == "login"
 }
 
+//easyjson:json
 type WSTableResponse struct {
 	Table  string          `json:"table"`
 	Action string          `json:"action",default:""`
@@ -106,6 +110,7 @@ func (r *WSTableResponse) Valid() bool {
 	return (len(r.Table) > 0 || len(r.Action) > 0) && len(r.Data) > 0
 }
 
+//easyjson:json
 type WSDepthItem struct {
 	InstrumentId string               `json:"instrument_id"`
 	Asks         [][3]decimal.Decimal `json:"asks"`
@@ -222,6 +227,7 @@ func calCrc32(askDepths *[][3]decimal.Decimal, bidDepths *[][3]decimal.Decimal) 
 	return crc32BaseBuffer, expectCrc32
 }
 
+//easyjson:json
 type WSDepthTableResponse struct {
 	Table  string         `json:"table"`
 	Action string         `json:"action",default:""`
@@ -232,6 +238,7 @@ func (r *WSDepthTableResponse) Valid() bool {
 	return (len(r.Table) > 0 || len(r.Action) > 0) && strings.Contains(r.Table, "depth") && len(r.Data) > 0
 }
 
+//easyjson:json
 type WSHotDepths struct {
 	Table    string
 	DepthMap map[string]*WSDepthItem
@@ -287,6 +294,7 @@ func (d *WSHotDepths) loadWSDepthTableResponse(r *WSDepthTableResponse) error {
 	return nil
 }
 
+//easyjson:json
 type WSErrorResponse struct {
 	Event     string `json:"event"`
 	Message   string `json:"message"`
@@ -320,7 +328,7 @@ func loadResponse(rspMsg []byte) (interface{}, error) {
 			}
 		} else if tr.Table == "spot/account" {
 			atr := UserSpotAccountWS{
-				Table:  WSEventTable(tr.Table),
+				Table: WSEventTable(tr.Table),
 			}
 
 			err = JsonBytes2Struct(tr.Data, &atr.Data)
@@ -329,7 +337,7 @@ func loadResponse(rspMsg []byte) (interface{}, error) {
 			}
 		} else if tr.Table == "spot/order" {
 			atr := UserOrdersWS{
-				Table:  WSEventTable(tr.Table),
+				Table: WSEventTable(tr.Table),
 			}
 
 			err = JsonBytes2Struct(tr.Data, &atr.Data)
