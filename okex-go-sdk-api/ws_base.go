@@ -229,10 +229,13 @@ func calCrc32(askDepths *[][3]decimal.Decimal, bidDepths *[][3]decimal.Decimal) 
 
 //easyjson:json
 type WSDepthTableResponse struct {
-	Table  string         `json:"table"`
-	Action string         `json:"action",default:""`
-	Data   []*WSDepthItem `json:"data"`
+	Table  string          `json:"table"`
+	Action string          `json:"action",default:""`
+	Data   WSDepthItemList `json:"data"`
 }
+
+//easyjson:json
+type WSDepthItemList []*WSDepthItem
 
 func (r *WSDepthTableResponse) Valid() bool {
 	return (len(r.Table) > 0 || len(r.Action) > 0) && strings.Contains(r.Table, "depth") && len(r.Data) > 0

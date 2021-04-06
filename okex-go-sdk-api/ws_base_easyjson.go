@@ -399,36 +399,7 @@ func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(in *jlex
 		case "action":
 			out.Action = string(in.String())
 		case "data":
-			if in.IsNull() {
-				in.Skip()
-				out.Data = nil
-			} else {
-				in.Delim('[')
-				if out.Data == nil {
-					if !in.IsDelim(']') {
-						out.Data = make([]*WSDepthItem, 0, 8)
-					} else {
-						out.Data = []*WSDepthItem{}
-					}
-				} else {
-					out.Data = (out.Data)[:0]
-				}
-				for !in.IsDelim(']') {
-					var v3 *WSDepthItem
-					if in.IsNull() {
-						in.Skip()
-						v3 = nil
-					} else {
-						if v3 == nil {
-							v3 = new(WSDepthItem)
-						}
-						(*v3).UnmarshalEasyJSON(in)
-					}
-					out.Data = append(out.Data, v3)
-					in.WantComma()
-				}
-				in.Delim(']')
-			}
+			(out.Data).UnmarshalEasyJSON(in)
 		default:
 			in.SkipRecursive()
 		}
@@ -456,22 +427,7 @@ func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(out *jwr
 	{
 		const prefix string = ",\"data\":"
 		out.RawString(prefix)
-		if in.Data == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
-			out.RawString("null")
-		} else {
-			out.RawByte('[')
-			for v4, v5 := range in.Data {
-				if v4 > 0 {
-					out.RawByte(',')
-				}
-				if v5 == nil {
-					out.RawString("null")
-				} else {
-					(*v5).MarshalEasyJSON(out)
-				}
-			}
-			out.RawByte(']')
-		}
+		(in.Data).MarshalEasyJSON(out)
 	}
 	out.RawByte('}')
 }
@@ -499,7 +455,85 @@ func (v *WSDepthTableResponse) UnmarshalJSON(data []byte) error {
 func (v *WSDepthTableResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(l, v)
 }
-func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(in *jlexer.Lexer, out *WSDepthItem) {
+func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(in *jlexer.Lexer, out *WSDepthItemList) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		in.Skip()
+		*out = nil
+	} else {
+		in.Delim('[')
+		if *out == nil {
+			if !in.IsDelim(']') {
+				*out = make(WSDepthItemList, 0, 8)
+			} else {
+				*out = WSDepthItemList{}
+			}
+		} else {
+			*out = (*out)[:0]
+		}
+		for !in.IsDelim(']') {
+			var v3 *WSDepthItem
+			if in.IsNull() {
+				in.Skip()
+				v3 = nil
+			} else {
+				if v3 == nil {
+					v3 = new(WSDepthItem)
+				}
+				(*v3).UnmarshalEasyJSON(in)
+			}
+			*out = append(*out, v3)
+			in.WantComma()
+		}
+		in.Delim(']')
+	}
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(out *jwriter.Writer, in WSDepthItemList) {
+	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+		out.RawString("null")
+	} else {
+		out.RawByte('[')
+		for v4, v5 := range in {
+			if v4 > 0 {
+				out.RawByte(',')
+			}
+			if v5 == nil {
+				out.RawString("null")
+			} else {
+				(*v5).MarshalEasyJSON(out)
+			}
+		}
+		out.RawByte(']')
+	}
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v WSDepthItemList) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v WSDepthItemList) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *WSDepthItemList) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *WSDepthItemList) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(l, v)
+}
+func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(in *jlexer.Lexer, out *WSDepthItem) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -614,7 +648,7 @@ func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(in *jlex
 		in.Consumed()
 	}
 }
-func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(out *jwriter.Writer, in WSDepthItem) {
+func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(out *jwriter.Writer, in WSDepthItem) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -685,27 +719,27 @@ func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v WSDepthItem) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&w, v)
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v WSDepthItem) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(w, v)
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *WSDepthItem) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&r, v)
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *WSDepthItem) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(l, v)
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(l, v)
 }
-func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(in *jlexer.Lexer, out *SubscriptionTopic) {
+func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlexer.Lexer, out *SubscriptionTopic) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -734,7 +768,7 @@ func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(in *jlex
 		in.Consumed()
 	}
 }
-func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(out *jwriter.Writer, in SubscriptionTopic) {
+func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(out *jwriter.Writer, in SubscriptionTopic) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -744,27 +778,27 @@ func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v SubscriptionTopic) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&w, v)
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SubscriptionTopic) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(w, v)
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SubscriptionTopic) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&r, v)
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SubscriptionTopic) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(l, v)
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(l, v)
 }
-func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlexer.Lexer, out *BaseOp) {
+func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(in *jlexer.Lexer, out *BaseOp) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -818,7 +852,7 @@ func easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlex
 		in.Consumed()
 	}
 }
-func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(out *jwriter.Writer, in BaseOp) {
+func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(out *jwriter.Writer, in BaseOp) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -849,23 +883,23 @@ func easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v BaseOp) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&w, v)
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v BaseOp) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(w, v)
+	easyjsonC3248cf0EncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *BaseOp) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&r, v)
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *BaseOp) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(l, v)
+	easyjsonC3248cf0DecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(l, v)
 }
