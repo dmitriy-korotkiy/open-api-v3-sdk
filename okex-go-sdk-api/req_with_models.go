@@ -427,7 +427,7 @@ func (client *Client) LimitedGetSpotOpenedOrders(status OrderStatus, pair string
 	options["before"] = beforeID
 	options["limit"] = limit
 	url := SPOT_ORDERS_OPENED
-	if !isOpened {
+	if !isOpened { // TODO: closed for the last 3 months
 		url = SPOT_ORDERS_CLOSED
 	}
 	uri := BuildParams(url, options)
