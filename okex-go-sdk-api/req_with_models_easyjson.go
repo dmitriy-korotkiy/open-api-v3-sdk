@@ -18,7 +18,73 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(in *jlexer.Lexer, out *WithdrawalFeesList) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(in *jlexer.Lexer, out *WithdrawalFeesListWrapper) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "data":
+			(out.Data).UnmarshalEasyJSON(in)
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(out *jwriter.Writer, in WithdrawalFeesListWrapper) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"data\":"
+		out.RawString(prefix[1:])
+		(in.Data).MarshalEasyJSON(out)
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v WithdrawalFeesListWrapper) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v WithdrawalFeesListWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *WithdrawalFeesListWrapper) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *WithdrawalFeesListWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(in *jlexer.Lexer, out *WithdrawalFeesList) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		in.Skip()
@@ -54,7 +120,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(in *jlexe
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(out *jwriter.Writer, in WithdrawalFeesList) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(out *jwriter.Writer, in WithdrawalFeesList) {
 	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
 	} else {
@@ -76,27 +142,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(out *jwri
 // MarshalJSON supports json.Marshaler interface
 func (v WithdrawalFeesList) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v WithdrawalFeesList) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *WithdrawalFeesList) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *WithdrawalFeesList) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(in *jlexer.Lexer, out *WithdrawalFee) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(in *jlexer.Lexer, out *WithdrawalFee) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -115,13 +181,17 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(in *jlex
 			continue
 		}
 		switch key {
-		case "currency":
+		case "ccy":
 			out.Currency = string(in.String())
-		case "max_fee":
+		case "minWd":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.MinWithdrawal).UnmarshalJSON(data))
+			}
+		case "maxFee":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.MaxFee).UnmarshalJSON(data))
 			}
-		case "min_fee":
+		case "minFee":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.MinFee).UnmarshalJSON(data))
 			}
@@ -135,22 +205,27 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(out *jwriter.Writer, in WithdrawalFee) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(out *jwriter.Writer, in WithdrawalFee) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"currency\":"
+		const prefix string = ",\"ccy\":"
 		out.RawString(prefix[1:])
 		out.String(string(in.Currency))
 	}
 	{
-		const prefix string = ",\"max_fee\":"
+		const prefix string = ",\"minWd\":"
+		out.RawString(prefix)
+		out.Raw((in.MinWithdrawal).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"maxFee\":"
 		out.RawString(prefix)
 		out.Raw((in.MaxFee).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"min_fee\":"
+		const prefix string = ",\"minFee\":"
 		out.RawString(prefix)
 		out.Raw((in.MinFee).MarshalJSON())
 	}
@@ -160,27 +235,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v WithdrawalFee) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v WithdrawalFee) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *WithdrawalFee) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *WithdrawalFee) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi1(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(in *jlexer.Lexer, out *WSEvent) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(in *jlexer.Lexer, out *WSEvent) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -217,7 +292,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(out *jwriter.Writer, in WSEvent) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(out *jwriter.Writer, in WSEvent) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -242,27 +317,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v WSEvent) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v WSEvent) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *WSEvent) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *WSEvent) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi2(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(in *jlexer.Lexer, out *UserSpotAccountWS) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(in *jlexer.Lexer, out *UserSpotAccountWS) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -295,7 +370,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(out *jwriter.Writer, in UserSpotAccountWS) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(out *jwriter.Writer, in UserSpotAccountWS) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -315,27 +390,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v UserSpotAccountWS) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v UserSpotAccountWS) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *UserSpotAccountWS) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *UserSpotAccountWS) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi3(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(in *jlexer.Lexer, out *UserOrdersWS) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(in *jlexer.Lexer, out *UserOrdersWS) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -397,7 +472,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(out *jwriter.Writer, in UserOrdersWS) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(out *jwriter.Writer, in UserOrdersWS) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -432,27 +507,137 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v UserOrdersWS) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v UserOrdersWS) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *UserOrdersWS) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *UserOrdersWS) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi4(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(in *jlexer.Lexer, out *TradeFee) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(in *jlexer.Lexer, out *TradeFeeListWrapper) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "data":
+			if in.IsNull() {
+				in.Skip()
+				out.Data = nil
+			} else {
+				in.Delim('[')
+				if out.Data == nil {
+					if !in.IsDelim(']') {
+						out.Data = make([]*TradeFee, 0, 8)
+					} else {
+						out.Data = []*TradeFee{}
+					}
+				} else {
+					out.Data = (out.Data)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v7 *TradeFee
+					if in.IsNull() {
+						in.Skip()
+						v7 = nil
+					} else {
+						if v7 == nil {
+							v7 = new(TradeFee)
+						}
+						(*v7).UnmarshalEasyJSON(in)
+					}
+					out.Data = append(out.Data, v7)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(out *jwriter.Writer, in TradeFeeListWrapper) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"data\":"
+		out.RawString(prefix[1:])
+		if in.Data == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v8, v9 := range in.Data {
+				if v8 > 0 {
+					out.RawByte(',')
+				}
+				if v9 == nil {
+					out.RawString("null")
+				} else {
+					(*v9).MarshalEasyJSON(out)
+				}
+			}
+			out.RawByte(']')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v TradeFeeListWrapper) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v TradeFeeListWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *TradeFeeListWrapper) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *TradeFeeListWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlexer.Lexer, out *TradeFee) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -479,10 +664,8 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(in *jlex
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.Taker).UnmarshalJSON(data))
 			}
-		case "timestamp":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Timestamp).UnmarshalJSON(data))
-			}
+		case "ts":
+			out.Timestamp = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -493,7 +676,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(out *jwriter.Writer, in TradeFee) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(out *jwriter.Writer, in TradeFee) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -508,9 +691,9 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(out *jwr
 		out.Raw((in.Taker).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"timestamp\":"
+		const prefix string = ",\"ts\":"
 		out.RawString(prefix)
-		out.Raw((in.Timestamp).MarshalJSON())
+		out.String(string(in.Timestamp))
 	}
 	out.RawByte('}')
 }
@@ -518,27 +701,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v TradeFee) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v TradeFee) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *TradeFee) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *TradeFee) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi5(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(in *jlexer.Lexer, out *SpotOrderResponse) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(in *jlexer.Lexer, out *SpotOrderResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -557,16 +740,16 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(in *jlex
 			continue
 		}
 		switch key {
-		case "order_id":
+		case "ordId":
 			out.OrderID = string(in.String())
-		case "client_oid":
+		case "clOrdId":
 			out.ClientOrderID = string(in.String())
-		case "error_message":
-			out.ErrorMessage = string(in.String())
-		case "error_code":
-			out.ErrorCode = string(in.String())
-		case "result":
-			out.Result = bool(in.Bool())
+		case "sCode":
+			out.SCode = string(in.String())
+		case "sMsg":
+			out.SMsg = string(in.String())
+		case "tag":
+			out.Tag = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -577,34 +760,34 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(out *jwriter.Writer, in SpotOrderResponse) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(out *jwriter.Writer, in SpotOrderResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"order_id\":"
+		const prefix string = ",\"ordId\":"
 		out.RawString(prefix[1:])
 		out.String(string(in.OrderID))
 	}
 	{
-		const prefix string = ",\"client_oid\":"
+		const prefix string = ",\"clOrdId\":"
 		out.RawString(prefix)
 		out.String(string(in.ClientOrderID))
 	}
 	{
-		const prefix string = ",\"error_message\":"
+		const prefix string = ",\"sCode\":"
 		out.RawString(prefix)
-		out.String(string(in.ErrorMessage))
+		out.String(string(in.SCode))
 	}
 	{
-		const prefix string = ",\"error_code\":"
+		const prefix string = ",\"sMsg\":"
 		out.RawString(prefix)
-		out.String(string(in.ErrorCode))
+		out.String(string(in.SMsg))
 	}
 	{
-		const prefix string = ",\"result\":"
+		const prefix string = ",\"tag\":"
 		out.RawString(prefix)
-		out.Bool(bool(in.Result))
+		out.String(string(in.Tag))
 	}
 	out.RawByte('}')
 }
@@ -612,27 +795,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v SpotOrderResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SpotOrderResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SpotOrderResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SpotOrderResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi6(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlexer.Lexer, out *SpotNewOrderResponse) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(in *jlexer.Lexer, out *SpotNewOrderResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -641,7 +824,6 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlex
 		in.Skip()
 		return
 	}
-	out.SpotOrderResponse = new(SpotOrderResponse)
 	in.Delim('{')
 	for !in.IsDelim('}') {
 		key := in.UnsafeFieldName(false)
@@ -652,16 +834,41 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlex
 			continue
 		}
 		switch key {
-		case "order_id":
-			out.OrderID = string(in.String())
-		case "client_oid":
-			out.ClientOrderID = string(in.String())
-		case "error_message":
-			out.ErrorMessage = string(in.String())
-		case "error_code":
-			out.ErrorCode = string(in.String())
-		case "result":
-			out.Result = bool(in.Bool())
+		case "code":
+			out.Code = string(in.String())
+		case "msg":
+			out.Msg = string(in.String())
+		case "data":
+			if in.IsNull() {
+				in.Skip()
+				out.Data = nil
+			} else {
+				in.Delim('[')
+				if out.Data == nil {
+					if !in.IsDelim(']') {
+						out.Data = make([]*SpotOrderResponse, 0, 8)
+					} else {
+						out.Data = []*SpotOrderResponse{}
+					}
+				} else {
+					out.Data = (out.Data)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v10 *SpotOrderResponse
+					if in.IsNull() {
+						in.Skip()
+						v10 = nil
+					} else {
+						if v10 == nil {
+							v10 = new(SpotOrderResponse)
+						}
+						(*v10).UnmarshalEasyJSON(in)
+					}
+					out.Data = append(out.Data, v10)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
 		default:
 			in.SkipRecursive()
 		}
@@ -672,34 +879,39 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(in *jlex
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(out *jwriter.Writer, in SpotNewOrderResponse) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(out *jwriter.Writer, in SpotNewOrderResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"order_id\":"
+		const prefix string = ",\"code\":"
 		out.RawString(prefix[1:])
-		out.String(string(in.OrderID))
+		out.String(string(in.Code))
 	}
 	{
-		const prefix string = ",\"client_oid\":"
+		const prefix string = ",\"msg\":"
 		out.RawString(prefix)
-		out.String(string(in.ClientOrderID))
+		out.String(string(in.Msg))
 	}
 	{
-		const prefix string = ",\"error_message\":"
+		const prefix string = ",\"data\":"
 		out.RawString(prefix)
-		out.String(string(in.ErrorMessage))
-	}
-	{
-		const prefix string = ",\"error_code\":"
-		out.RawString(prefix)
-		out.String(string(in.ErrorCode))
-	}
-	{
-		const prefix string = ",\"result\":"
-		out.RawString(prefix)
-		out.Bool(bool(in.Result))
+		if in.Data == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v11, v12 := range in.Data {
+				if v11 > 0 {
+					out.RawByte(',')
+				}
+				if v12 == nil {
+					out.RawString("null")
+				} else {
+					(*v12).MarshalEasyJSON(out)
+				}
+			}
+			out.RawByte(']')
+		}
 	}
 	out.RawByte('}')
 }
@@ -707,27 +919,93 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(out *jwr
 // MarshalJSON supports json.Marshaler interface
 func (v SpotNewOrderResponse) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v SpotNewOrderResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *SpotNewOrderResponse) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *SpotNewOrderResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi7(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(in *jlexer.Lexer, out *SpotInstrumentsTickerList) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(in *jlexer.Lexer, out *SpotInstrumentsTickerListWrapper) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "data":
+			(out.Data).UnmarshalEasyJSON(in)
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(out *jwriter.Writer, in SpotInstrumentsTickerListWrapper) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"data\":"
+		out.RawString(prefix[1:])
+		(in.Data).MarshalEasyJSON(out)
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SpotInstrumentsTickerListWrapper) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SpotInstrumentsTickerListWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SpotInstrumentsTickerListWrapper) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SpotInstrumentsTickerListWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(in *jlexer.Lexer, out *SpotInstrumentsTickerList) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		in.Skip()
@@ -744,570 +1022,13 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(in *jlex
 			*out = (*out)[:0]
 		}
 		for !in.IsDelim(']') {
-			var v7 *SpotInstrumentTicker
-			if in.IsNull() {
-				in.Skip()
-				v7 = nil
-			} else {
-				if v7 == nil {
-					v7 = new(SpotInstrumentTicker)
-				}
-				(*v7).UnmarshalEasyJSON(in)
-			}
-			*out = append(*out, v7)
-			in.WantComma()
-		}
-		in.Delim(']')
-	}
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(out *jwriter.Writer, in SpotInstrumentsTickerList) {
-	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
-		out.RawString("null")
-	} else {
-		out.RawByte('[')
-		for v8, v9 := range in {
-			if v8 > 0 {
-				out.RawByte(',')
-			}
-			if v9 == nil {
-				out.RawString("null")
-			} else {
-				(*v9).MarshalEasyJSON(out)
-			}
-		}
-		out.RawByte(']')
-	}
-}
-
-// MarshalJSON supports json.Marshaler interface
-func (v SpotInstrumentsTickerList) MarshalJSON() ([]byte, error) {
-	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(&w, v)
-	return w.Buffer.BuildBytes(), w.Error
-}
-
-// MarshalEasyJSON supports easyjson.Marshaler interface
-func (v SpotInstrumentsTickerList) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(w, v)
-}
-
-// UnmarshalJSON supports json.Unmarshaler interface
-func (v *SpotInstrumentsTickerList) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(&r, v)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *SpotInstrumentsTickerList) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi8(l, v)
-}
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(in *jlexer.Lexer, out *SpotInstrumentsList) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		in.Skip()
-		*out = nil
-	} else {
-		in.Delim('[')
-		if *out == nil {
-			if !in.IsDelim(']') {
-				*out = make(SpotInstrumentsList, 0, 8)
-			} else {
-				*out = SpotInstrumentsList{}
-			}
-		} else {
-			*out = (*out)[:0]
-		}
-		for !in.IsDelim(']') {
-			var v10 *SpotInstrument
-			if in.IsNull() {
-				in.Skip()
-				v10 = nil
-			} else {
-				if v10 == nil {
-					v10 = new(SpotInstrument)
-				}
-				(*v10).UnmarshalEasyJSON(in)
-			}
-			*out = append(*out, v10)
-			in.WantComma()
-		}
-		in.Delim(']')
-	}
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(out *jwriter.Writer, in SpotInstrumentsList) {
-	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
-		out.RawString("null")
-	} else {
-		out.RawByte('[')
-		for v11, v12 := range in {
-			if v11 > 0 {
-				out.RawByte(',')
-			}
-			if v12 == nil {
-				out.RawString("null")
-			} else {
-				(*v12).MarshalEasyJSON(out)
-			}
-		}
-		out.RawByte(']')
-	}
-}
-
-// MarshalJSON supports json.Marshaler interface
-func (v SpotInstrumentsList) MarshalJSON() ([]byte, error) {
-	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(&w, v)
-	return w.Buffer.BuildBytes(), w.Error
-}
-
-// MarshalEasyJSON supports easyjson.Marshaler interface
-func (v SpotInstrumentsList) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(w, v)
-}
-
-// UnmarshalJSON supports json.Unmarshaler interface
-func (v *SpotInstrumentsList) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(&r, v)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *SpotInstrumentsList) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi9(l, v)
-}
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(in *jlexer.Lexer, out *SpotInstrumentTicker) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeFieldName(false)
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "ask":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Ask).UnmarshalJSON(data))
-			}
-		case "bid":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Bid).UnmarshalJSON(data))
-			}
-		case "best_ask":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.BestAsk).UnmarshalJSON(data))
-			}
-		case "best_bid":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.BestBid).UnmarshalJSON(data))
-			}
-		case "best_ask_size":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.BestAskSize).UnmarshalJSON(data))
-			}
-		case "best_bid_size":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.BestBidSize).UnmarshalJSON(data))
-			}
-		case "base_volume_24h":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.BaseVolume24h).UnmarshalJSON(data))
-			}
-		case "quote_volume_24h":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.QuoteVolume24h).UnmarshalJSON(data))
-			}
-		case "high_24h":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.High24h).UnmarshalJSON(data))
-			}
-		case "low_24h":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Low24h).UnmarshalJSON(data))
-			}
-		case "open_24h":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Open24h).UnmarshalJSON(data))
-			}
-		case "last":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Last).UnmarshalJSON(data))
-			}
-		case "last_qty":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.LastQty).UnmarshalJSON(data))
-			}
-		case "timestamp":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Timestamp).UnmarshalJSON(data))
-			}
-		case "instrument_id":
-			out.Pair = string(in.String())
-		case "product_id":
-			out.ProductID = string(in.String())
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(out *jwriter.Writer, in SpotInstrumentTicker) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"ask\":"
-		out.RawString(prefix[1:])
-		out.Raw((in.Ask).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"bid\":"
-		out.RawString(prefix)
-		out.Raw((in.Bid).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"best_ask\":"
-		out.RawString(prefix)
-		out.Raw((in.BestAsk).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"best_bid\":"
-		out.RawString(prefix)
-		out.Raw((in.BestBid).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"best_ask_size\":"
-		out.RawString(prefix)
-		out.Raw((in.BestAskSize).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"best_bid_size\":"
-		out.RawString(prefix)
-		out.Raw((in.BestBidSize).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"base_volume_24h\":"
-		out.RawString(prefix)
-		out.Raw((in.BaseVolume24h).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"quote_volume_24h\":"
-		out.RawString(prefix)
-		out.Raw((in.QuoteVolume24h).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"high_24h\":"
-		out.RawString(prefix)
-		out.Raw((in.High24h).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"low_24h\":"
-		out.RawString(prefix)
-		out.Raw((in.Low24h).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"open_24h\":"
-		out.RawString(prefix)
-		out.Raw((in.Open24h).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"last\":"
-		out.RawString(prefix)
-		out.Raw((in.Last).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"last_qty\":"
-		out.RawString(prefix)
-		out.Raw((in.LastQty).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"timestamp\":"
-		out.RawString(prefix)
-		out.Raw((in.Timestamp).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"instrument_id\":"
-		out.RawString(prefix)
-		out.String(string(in.Pair))
-	}
-	{
-		const prefix string = ",\"product_id\":"
-		out.RawString(prefix)
-		out.String(string(in.ProductID))
-	}
-	out.RawByte('}')
-}
-
-// MarshalJSON supports json.Marshaler interface
-func (v SpotInstrumentTicker) MarshalJSON() ([]byte, error) {
-	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(&w, v)
-	return w.Buffer.BuildBytes(), w.Error
-}
-
-// MarshalEasyJSON supports easyjson.Marshaler interface
-func (v SpotInstrumentTicker) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(w, v)
-}
-
-// UnmarshalJSON supports json.Unmarshaler interface
-func (v *SpotInstrumentTicker) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(&r, v)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *SpotInstrumentTicker) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi10(l, v)
-}
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(in *jlexer.Lexer, out *SpotInstrument) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeFieldName(false)
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "base_currency":
-			out.BaseCurrency = string(in.String())
-		case "quote_currency":
-			out.QuoteCurrency = string(in.String())
-		case "instrument_id":
-			out.Pair = string(in.String())
-		case "min_size":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.MinSize).UnmarshalJSON(data))
-			}
-		case "size_increment":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.SizeIncrement).UnmarshalJSON(data))
-			}
-		case "tick_size":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.TickSize).UnmarshalJSON(data))
-			}
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(out *jwriter.Writer, in SpotInstrument) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"base_currency\":"
-		out.RawString(prefix[1:])
-		out.String(string(in.BaseCurrency))
-	}
-	{
-		const prefix string = ",\"quote_currency\":"
-		out.RawString(prefix)
-		out.String(string(in.QuoteCurrency))
-	}
-	{
-		const prefix string = ",\"instrument_id\":"
-		out.RawString(prefix)
-		out.String(string(in.Pair))
-	}
-	{
-		const prefix string = ",\"min_size\":"
-		out.RawString(prefix)
-		out.Raw((in.MinSize).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"size_increment\":"
-		out.RawString(prefix)
-		out.Raw((in.SizeIncrement).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"tick_size\":"
-		out.RawString(prefix)
-		out.Raw((in.TickSize).MarshalJSON())
-	}
-	out.RawByte('}')
-}
-
-// MarshalJSON supports json.Marshaler interface
-func (v SpotInstrument) MarshalJSON() ([]byte, error) {
-	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(&w, v)
-	return w.Buffer.BuildBytes(), w.Error
-}
-
-// MarshalEasyJSON supports easyjson.Marshaler interface
-func (v SpotInstrument) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(w, v)
-}
-
-// UnmarshalJSON supports json.Unmarshaler interface
-func (v *SpotInstrument) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(&r, v)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *SpotInstrument) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(l, v)
-}
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(in *jlexer.Lexer, out *SpotCancelOrderResponse) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	out.SpotOrderResponse = new(SpotOrderResponse)
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeFieldName(false)
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "order_id":
-			out.OrderID = string(in.String())
-		case "client_oid":
-			out.ClientOrderID = string(in.String())
-		case "error_message":
-			out.ErrorMessage = string(in.String())
-		case "error_code":
-			out.ErrorCode = string(in.String())
-		case "result":
-			out.Result = bool(in.Bool())
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(out *jwriter.Writer, in SpotCancelOrderResponse) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	{
-		const prefix string = ",\"order_id\":"
-		out.RawString(prefix[1:])
-		out.String(string(in.OrderID))
-	}
-	{
-		const prefix string = ",\"client_oid\":"
-		out.RawString(prefix)
-		out.String(string(in.ClientOrderID))
-	}
-	{
-		const prefix string = ",\"error_message\":"
-		out.RawString(prefix)
-		out.String(string(in.ErrorMessage))
-	}
-	{
-		const prefix string = ",\"error_code\":"
-		out.RawString(prefix)
-		out.String(string(in.ErrorCode))
-	}
-	{
-		const prefix string = ",\"result\":"
-		out.RawString(prefix)
-		out.Bool(bool(in.Result))
-	}
-	out.RawByte('}')
-}
-
-// MarshalJSON supports json.Marshaler interface
-func (v SpotCancelOrderResponse) MarshalJSON() ([]byte, error) {
-	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(&w, v)
-	return w.Buffer.BuildBytes(), w.Error
-}
-
-// MarshalEasyJSON supports easyjson.Marshaler interface
-func (v SpotCancelOrderResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(w, v)
-}
-
-// UnmarshalJSON supports json.Unmarshaler interface
-func (v *SpotCancelOrderResponse) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(&r, v)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *SpotCancelOrderResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(l, v)
-}
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(in *jlexer.Lexer, out *SpotAccountBalancesList) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		in.Skip()
-		*out = nil
-	} else {
-		in.Delim('[')
-		if *out == nil {
-			if !in.IsDelim(']') {
-				*out = make(SpotAccountBalancesList, 0, 8)
-			} else {
-				*out = SpotAccountBalancesList{}
-			}
-		} else {
-			*out = (*out)[:0]
-		}
-		for !in.IsDelim(']') {
-			var v13 *SpotAccountBalance
+			var v13 *SpotInstrumentTicker
 			if in.IsNull() {
 				in.Skip()
 				v13 = nil
 			} else {
 				if v13 == nil {
-					v13 = new(SpotAccountBalance)
+					v13 = new(SpotInstrumentTicker)
 				}
 				(*v13).UnmarshalEasyJSON(in)
 			}
@@ -1320,7 +1041,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(out *jwriter.Writer, in SpotAccountBalancesList) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(out *jwriter.Writer, in SpotInstrumentsTickerList) {
 	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
 	} else {
@@ -1340,29 +1061,29 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(out *jw
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v SpotAccountBalancesList) MarshalJSON() ([]byte, error) {
+func (v SpotInstrumentsTickerList) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v SpotAccountBalancesList) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(w, v)
+func (v SpotInstrumentsTickerList) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *SpotAccountBalancesList) UnmarshalJSON(data []byte) error {
+func (v *SpotInstrumentsTickerList) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *SpotAccountBalancesList) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(l, v)
+func (v *SpotInstrumentsTickerList) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi11(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(in *jlexer.Lexer, out *SpotAccountBalance) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(in *jlexer.Lexer, out *SpotInstrumentsListWrapper) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1381,30 +1102,8 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(in *jle
 			continue
 		}
 		switch key {
-		case "frozen":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Frozen).UnmarshalJSON(data))
-			}
-		case "hold":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Hold).UnmarshalJSON(data))
-			}
-		case "id":
-			out.AccountID = string(in.String())
-		case "currency":
-			out.Currency = string(in.String())
-		case "balance":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Balance).UnmarshalJSON(data))
-			}
-		case "available":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Available).UnmarshalJSON(data))
-			}
-		case "holds":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Holds).UnmarshalJSON(data))
-			}
+		case "data":
+			(out.Data).UnmarshalEasyJSON(in)
 		default:
 			in.SkipRecursive()
 		}
@@ -1415,72 +1114,42 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(out *jwriter.Writer, in SpotAccountBalance) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(out *jwriter.Writer, in SpotInstrumentsListWrapper) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"frozen\":"
+		const prefix string = ",\"data\":"
 		out.RawString(prefix[1:])
-		out.Raw((in.Frozen).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"hold\":"
-		out.RawString(prefix)
-		out.Raw((in.Hold).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"id\":"
-		out.RawString(prefix)
-		out.String(string(in.AccountID))
-	}
-	{
-		const prefix string = ",\"currency\":"
-		out.RawString(prefix)
-		out.String(string(in.Currency))
-	}
-	{
-		const prefix string = ",\"balance\":"
-		out.RawString(prefix)
-		out.Raw((in.Balance).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"available\":"
-		out.RawString(prefix)
-		out.Raw((in.Available).MarshalJSON())
-	}
-	{
-		const prefix string = ",\"holds\":"
-		out.RawString(prefix)
-		out.Raw((in.Holds).MarshalJSON())
+		(in.Data).MarshalEasyJSON(out)
 	}
 	out.RawByte('}')
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v SpotAccountBalance) MarshalJSON() ([]byte, error) {
+func (v SpotInstrumentsListWrapper) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v SpotAccountBalance) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(w, v)
+func (v SpotInstrumentsListWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *SpotAccountBalance) UnmarshalJSON(data []byte) error {
+func (v *SpotInstrumentsListWrapper) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *SpotAccountBalance) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(l, v)
+func (v *SpotInstrumentsListWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi12(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(in *jlexer.Lexer, out *OrdersList) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(in *jlexer.Lexer, out *SpotInstrumentsList) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		in.Skip()
@@ -1489,21 +1158,21 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(in *jle
 		in.Delim('[')
 		if *out == nil {
 			if !in.IsDelim(']') {
-				*out = make(OrdersList, 0, 8)
+				*out = make(SpotInstrumentsList, 0, 8)
 			} else {
-				*out = OrdersList{}
+				*out = SpotInstrumentsList{}
 			}
 		} else {
 			*out = (*out)[:0]
 		}
 		for !in.IsDelim(']') {
-			var v16 *Order
+			var v16 *SpotInstrument
 			if in.IsNull() {
 				in.Skip()
 				v16 = nil
 			} else {
 				if v16 == nil {
-					v16 = new(Order)
+					v16 = new(SpotInstrument)
 				}
 				(*v16).UnmarshalEasyJSON(in)
 			}
@@ -1516,7 +1185,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(out *jwriter.Writer, in OrdersList) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(out *jwriter.Writer, in SpotInstrumentsList) {
 	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
 	} else {
@@ -1536,29 +1205,820 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(out *jw
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v OrdersList) MarshalJSON() ([]byte, error) {
+func (v SpotInstrumentsList) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SpotInstrumentsList) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SpotInstrumentsList) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SpotInstrumentsList) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi13(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(in *jlexer.Lexer, out *SpotInstrumentTicker) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "askPx":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.BestAsk).UnmarshalJSON(data))
+			}
+		case "bidPx":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.BestBid).UnmarshalJSON(data))
+			}
+		case "askSz":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.BestAskSize).UnmarshalJSON(data))
+			}
+		case "bidSz":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.BestBidSize).UnmarshalJSON(data))
+			}
+		case "vol24h":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.BaseVolume24h).UnmarshalJSON(data))
+			}
+		case "volCcy24h":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.QuoteVolume24h).UnmarshalJSON(data))
+			}
+		case "high24h":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.High24h).UnmarshalJSON(data))
+			}
+		case "low24h":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Low24h).UnmarshalJSON(data))
+			}
+		case "open24h":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Open24h).UnmarshalJSON(data))
+			}
+		case "last":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Last).UnmarshalJSON(data))
+			}
+		case "lastSz":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.LastQty).UnmarshalJSON(data))
+			}
+		case "ts":
+			out.Timestamp = string(in.String())
+		case "instId":
+			out.Pair = string(in.String())
+		case "instType":
+			out.Type = string(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(out *jwriter.Writer, in SpotInstrumentTicker) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"askPx\":"
+		out.RawString(prefix[1:])
+		out.Raw((in.BestAsk).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"bidPx\":"
+		out.RawString(prefix)
+		out.Raw((in.BestBid).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"askSz\":"
+		out.RawString(prefix)
+		out.Raw((in.BestAskSize).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"bidSz\":"
+		out.RawString(prefix)
+		out.Raw((in.BestBidSize).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"vol24h\":"
+		out.RawString(prefix)
+		out.Raw((in.BaseVolume24h).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"volCcy24h\":"
+		out.RawString(prefix)
+		out.Raw((in.QuoteVolume24h).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"high24h\":"
+		out.RawString(prefix)
+		out.Raw((in.High24h).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"low24h\":"
+		out.RawString(prefix)
+		out.Raw((in.Low24h).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"open24h\":"
+		out.RawString(prefix)
+		out.Raw((in.Open24h).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"last\":"
+		out.RawString(prefix)
+		out.Raw((in.Last).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"lastSz\":"
+		out.RawString(prefix)
+		out.Raw((in.LastQty).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"ts\":"
+		out.RawString(prefix)
+		out.String(string(in.Timestamp))
+	}
+	{
+		const prefix string = ",\"instId\":"
+		out.RawString(prefix)
+		out.String(string(in.Pair))
+	}
+	{
+		const prefix string = ",\"instType\":"
+		out.RawString(prefix)
+		out.String(string(in.Type))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SpotInstrumentTicker) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SpotInstrumentTicker) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SpotInstrumentTicker) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SpotInstrumentTicker) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi14(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(in *jlexer.Lexer, out *SpotInstrument) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "baseCcy":
+			out.BaseCurrency = string(in.String())
+		case "quoteCcy":
+			out.QuoteCurrency = string(in.String())
+		case "instId":
+			out.Pair = string(in.String())
+		case "minSz":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.MinSize).UnmarshalJSON(data))
+			}
+		case "lotSz":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.SizeIncrement).UnmarshalJSON(data))
+			}
+		case "tickSz":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.TickSize).UnmarshalJSON(data))
+			}
+		case "state":
+			out.State = StateStatus(in.String())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(out *jwriter.Writer, in SpotInstrument) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"baseCcy\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.BaseCurrency))
+	}
+	{
+		const prefix string = ",\"quoteCcy\":"
+		out.RawString(prefix)
+		out.String(string(in.QuoteCurrency))
+	}
+	{
+		const prefix string = ",\"instId\":"
+		out.RawString(prefix)
+		out.String(string(in.Pair))
+	}
+	{
+		const prefix string = ",\"minSz\":"
+		out.RawString(prefix)
+		out.Raw((in.MinSize).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"lotSz\":"
+		out.RawString(prefix)
+		out.Raw((in.SizeIncrement).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"tickSz\":"
+		out.RawString(prefix)
+		out.Raw((in.TickSize).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"state\":"
+		out.RawString(prefix)
+		out.String(string(in.State))
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SpotInstrument) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
 	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v OrdersList) MarshalEasyJSON(w *jwriter.Writer) {
+func (v SpotInstrument) MarshalEasyJSON(w *jwriter.Writer) {
 	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *OrdersList) UnmarshalJSON(data []byte) error {
+func (v *SpotInstrument) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *OrdersList) UnmarshalEasyJSON(l *jlexer.Lexer) {
+func (v *SpotInstrument) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi15(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(in *jlexer.Lexer, out *OrderUpdateWS) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(in *jlexer.Lexer, out *SpotCancelOrderResponseWrapper) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "code":
+			out.Code = string(in.String())
+		case "data":
+			if in.IsNull() {
+				in.Skip()
+				out.Data = nil
+			} else {
+				in.Delim('[')
+				if out.Data == nil {
+					if !in.IsDelim(']') {
+						out.Data = make([]*SpotOrderResponse, 0, 8)
+					} else {
+						out.Data = []*SpotOrderResponse{}
+					}
+				} else {
+					out.Data = (out.Data)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v19 *SpotOrderResponse
+					if in.IsNull() {
+						in.Skip()
+						v19 = nil
+					} else {
+						if v19 == nil {
+							v19 = new(SpotOrderResponse)
+						}
+						(*v19).UnmarshalEasyJSON(in)
+					}
+					out.Data = append(out.Data, v19)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(out *jwriter.Writer, in SpotCancelOrderResponseWrapper) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"code\":"
+		out.RawString(prefix[1:])
+		out.String(string(in.Code))
+	}
+	{
+		const prefix string = ",\"data\":"
+		out.RawString(prefix)
+		if in.Data == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			out.RawString("null")
+		} else {
+			out.RawByte('[')
+			for v20, v21 := range in.Data {
+				if v20 > 0 {
+					out.RawByte(',')
+				}
+				if v21 == nil {
+					out.RawString("null")
+				} else {
+					(*v21).MarshalEasyJSON(out)
+				}
+			}
+			out.RawByte(']')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SpotCancelOrderResponseWrapper) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SpotCancelOrderResponseWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SpotCancelOrderResponseWrapper) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SpotCancelOrderResponseWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(in *jlexer.Lexer, out *SpotAccountBalancesListWrapper) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "data":
+			(out.Data).UnmarshalEasyJSON(in)
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(out *jwriter.Writer, in SpotAccountBalancesListWrapper) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"data\":"
+		out.RawString(prefix[1:])
+		(in.Data).MarshalEasyJSON(out)
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SpotAccountBalancesListWrapper) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SpotAccountBalancesListWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SpotAccountBalancesListWrapper) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SpotAccountBalancesListWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(in *jlexer.Lexer, out *SpotAccountBalancesList) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		in.Skip()
+		*out = nil
+	} else {
+		in.Delim('[')
+		if *out == nil {
+			if !in.IsDelim(']') {
+				*out = make(SpotAccountBalancesList, 0, 8)
+			} else {
+				*out = SpotAccountBalancesList{}
+			}
+		} else {
+			*out = (*out)[:0]
+		}
+		for !in.IsDelim(']') {
+			var v22 *SpotAccountBalance
+			if in.IsNull() {
+				in.Skip()
+				v22 = nil
+			} else {
+				if v22 == nil {
+					v22 = new(SpotAccountBalance)
+				}
+				(*v22).UnmarshalEasyJSON(in)
+			}
+			*out = append(*out, v22)
+			in.WantComma()
+		}
+		in.Delim(']')
+	}
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(out *jwriter.Writer, in SpotAccountBalancesList) {
+	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+		out.RawString("null")
+	} else {
+		out.RawByte('[')
+		for v23, v24 := range in {
+			if v23 > 0 {
+				out.RawByte(',')
+			}
+			if v24 == nil {
+				out.RawString("null")
+			} else {
+				(*v24).MarshalEasyJSON(out)
+			}
+		}
+		out.RawByte(']')
+	}
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SpotAccountBalancesList) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SpotAccountBalancesList) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SpotAccountBalancesList) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SpotAccountBalancesList) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(in *jlexer.Lexer, out *SpotAccountBalance) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "frozenBal":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Frozen).UnmarshalJSON(data))
+			}
+		case "ccy":
+			out.Currency = string(in.String())
+		case "bal":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Balance).UnmarshalJSON(data))
+			}
+		case "availBal":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Available).UnmarshalJSON(data))
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(out *jwriter.Writer, in SpotAccountBalance) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"frozenBal\":"
+		out.RawString(prefix[1:])
+		out.Raw((in.Frozen).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"ccy\":"
+		out.RawString(prefix)
+		out.String(string(in.Currency))
+	}
+	{
+		const prefix string = ",\"bal\":"
+		out.RawString(prefix)
+		out.Raw((in.Balance).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"availBal\":"
+		out.RawString(prefix)
+		out.Raw((in.Available).MarshalJSON())
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v SpotAccountBalance) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v SpotAccountBalance) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *SpotAccountBalance) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *SpotAccountBalance) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(in *jlexer.Lexer, out *OrdersListWrapper) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "data":
+			(out.Data).UnmarshalEasyJSON(in)
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(out *jwriter.Writer, in OrdersListWrapper) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"data\":"
+		out.RawString(prefix[1:])
+		(in.Data).MarshalEasyJSON(out)
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v OrdersListWrapper) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v OrdersListWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *OrdersListWrapper) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *OrdersListWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(in *jlexer.Lexer, out *OrdersList) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		in.Skip()
+		*out = nil
+	} else {
+		in.Delim('[')
+		if *out == nil {
+			if !in.IsDelim(']') {
+				*out = make(OrdersList, 0, 8)
+			} else {
+				*out = OrdersList{}
+			}
+		} else {
+			*out = (*out)[:0]
+		}
+		for !in.IsDelim(']') {
+			var v25 *Order
+			if in.IsNull() {
+				in.Skip()
+				v25 = nil
+			} else {
+				if v25 == nil {
+					v25 = new(Order)
+				}
+				(*v25).UnmarshalEasyJSON(in)
+			}
+			*out = append(*out, v25)
+			in.WantComma()
+		}
+		in.Delim(']')
+	}
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(out *jwriter.Writer, in OrdersList) {
+	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+		out.RawString("null")
+	} else {
+		out.RawByte('[')
+		for v26, v27 := range in {
+			if v26 > 0 {
+				out.RawByte(',')
+			}
+			if v27 == nil {
+				out.RawString("null")
+			} else {
+				(*v27).MarshalEasyJSON(out)
+			}
+		}
+		out.RawByte(']')
+	}
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v OrdersList) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v OrdersList) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *OrdersList) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *OrdersList) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(in *jlexer.Lexer, out *OrderUpdateWS) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1598,44 +2058,54 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(in *jle
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.CreatedAt).UnmarshalJSON(data))
 			}
-		case "order_id":
+		case "ordId":
 			out.OrderID = string(in.String())
-		case "client_oid":
+		case "clOrdId":
 			out.ClientOrderID = string(in.String())
-		case "timestamp":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Timestamp).UnmarshalJSON(data))
-			}
-		case "price":
+		case "cTime":
+			out.Timestamp = string(in.String())
+		case "px":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.Price).UnmarshalJSON(data))
 			}
-		case "price_avg":
+		case "avgPx":
+			out.PriceAvgStr = string(in.String())
+		case "PriceAvg":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.PriceAvg).UnmarshalJSON(data))
 			}
-		case "size":
+		case "sz":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.Quantity).UnmarshalJSON(data))
 			}
-		case "filled_size":
+		case "accFillSz":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.QuantityFilled).UnmarshalJSON(data))
 			}
-		case "filled_notional":
+		case "Total":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.Total).UnmarshalJSON(data))
 			}
-		case "notional":
-			out.Notional = string(in.String())
-		case "instrument_id":
+		case "pnl":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.ProfitAndLoss).UnmarshalJSON(data))
+			}
+		case "fee":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Fee).UnmarshalJSON(data))
+			}
+		case "feeCcy":
+			out.FeeCurrency = string(in.String())
+		case "instId":
 			out.Pair = string(in.String())
-		case "type":
+		case "tag":
+			out.Tag = string(in.String())
+		case "posSide":
+			out.PosSide = string(in.String())
+		case "ordType":
 			out.Type = OrderType(in.String())
 		case "side":
 			out.Side = OrderSide(in.String())
-		case "order_type":
-			out.Strategy = OrderStrategy(in.String())
 		case "state":
 			out.Status = OrderStatus(in.String())
 		default:
@@ -1648,7 +2118,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(out *jwriter.Writer, in OrderUpdateWS) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(out *jwriter.Writer, in OrderUpdateWS) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -1678,57 +2148,82 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(out *jw
 		out.Raw((in.CreatedAt).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"order_id\":"
+		const prefix string = ",\"ordId\":"
 		out.RawString(prefix)
 		out.String(string(in.OrderID))
 	}
 	{
-		const prefix string = ",\"client_oid\":"
+		const prefix string = ",\"clOrdId\":"
 		out.RawString(prefix)
 		out.String(string(in.ClientOrderID))
 	}
 	{
-		const prefix string = ",\"timestamp\":"
+		const prefix string = ",\"cTime\":"
 		out.RawString(prefix)
-		out.Raw((in.Timestamp).MarshalJSON())
+		out.String(string(in.Timestamp))
 	}
 	{
-		const prefix string = ",\"price\":"
+		const prefix string = ",\"px\":"
 		out.RawString(prefix)
 		out.Raw((in.Price).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"price_avg\":"
+		const prefix string = ",\"avgPx\":"
+		out.RawString(prefix)
+		out.String(string(in.PriceAvgStr))
+	}
+	{
+		const prefix string = ",\"PriceAvg\":"
 		out.RawString(prefix)
 		out.Raw((in.PriceAvg).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"size\":"
+		const prefix string = ",\"sz\":"
 		out.RawString(prefix)
 		out.Raw((in.Quantity).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"filled_size\":"
+		const prefix string = ",\"accFillSz\":"
 		out.RawString(prefix)
 		out.Raw((in.QuantityFilled).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"filled_notional\":"
+		const prefix string = ",\"Total\":"
 		out.RawString(prefix)
 		out.Raw((in.Total).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"notional\":"
+		const prefix string = ",\"pnl\":"
 		out.RawString(prefix)
-		out.String(string(in.Notional))
+		out.Raw((in.ProfitAndLoss).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"instrument_id\":"
+		const prefix string = ",\"fee\":"
+		out.RawString(prefix)
+		out.Raw((in.Fee).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"feeCcy\":"
+		out.RawString(prefix)
+		out.String(string(in.FeeCurrency))
+	}
+	{
+		const prefix string = ",\"instId\":"
 		out.RawString(prefix)
 		out.String(string(in.Pair))
 	}
 	{
-		const prefix string = ",\"type\":"
+		const prefix string = ",\"tag\":"
+		out.RawString(prefix)
+		out.String(string(in.Tag))
+	}
+	{
+		const prefix string = ",\"posSide\":"
+		out.RawString(prefix)
+		out.String(string(in.PosSide))
+	}
+	{
+		const prefix string = ",\"ordType\":"
 		out.RawString(prefix)
 		out.String(string(in.Type))
 	}
@@ -1736,11 +2231,6 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(out *jw
 		const prefix string = ",\"side\":"
 		out.RawString(prefix)
 		out.String(string(in.Side))
-	}
-	{
-		const prefix string = ",\"order_type\":"
-		out.RawString(prefix)
-		out.String(string(in.Strategy))
 	}
 	{
 		const prefix string = ",\"state\":"
@@ -1753,27 +2243,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(out *jw
 // MarshalJSON supports json.Marshaler interface
 func (v OrderUpdateWS) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v OrderUpdateWS) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *OrderUpdateWS) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *OrderUpdateWS) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi16(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(in *jlexer.Lexer, out *Order) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi23(in *jlexer.Lexer, out *Order) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1792,44 +2282,54 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(in *jle
 			continue
 		}
 		switch key {
-		case "order_id":
+		case "ordId":
 			out.OrderID = string(in.String())
-		case "client_oid":
+		case "clOrdId":
 			out.ClientOrderID = string(in.String())
-		case "timestamp":
-			if data := in.Raw(); in.Ok() {
-				in.AddError((out.Timestamp).UnmarshalJSON(data))
-			}
-		case "price":
+		case "cTime":
+			out.Timestamp = string(in.String())
+		case "px":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.Price).UnmarshalJSON(data))
 			}
-		case "price_avg":
+		case "avgPx":
+			out.PriceAvgStr = string(in.String())
+		case "PriceAvg":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.PriceAvg).UnmarshalJSON(data))
 			}
-		case "size":
+		case "sz":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.Quantity).UnmarshalJSON(data))
 			}
-		case "filled_size":
+		case "accFillSz":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.QuantityFilled).UnmarshalJSON(data))
 			}
-		case "filled_notional":
+		case "Total":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.Total).UnmarshalJSON(data))
 			}
-		case "notional":
-			out.Notional = string(in.String())
-		case "instrument_id":
+		case "pnl":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.ProfitAndLoss).UnmarshalJSON(data))
+			}
+		case "fee":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.Fee).UnmarshalJSON(data))
+			}
+		case "feeCcy":
+			out.FeeCurrency = string(in.String())
+		case "instId":
 			out.Pair = string(in.String())
-		case "type":
+		case "tag":
+			out.Tag = string(in.String())
+		case "posSide":
+			out.PosSide = string(in.String())
+		case "ordType":
 			out.Type = OrderType(in.String())
 		case "side":
 			out.Side = OrderSide(in.String())
-		case "order_type":
-			out.Strategy = OrderStrategy(in.String())
 		case "state":
 			out.Status = OrderStatus(in.String())
 		default:
@@ -1842,62 +2342,87 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(out *jwriter.Writer, in Order) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi23(out *jwriter.Writer, in Order) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"order_id\":"
+		const prefix string = ",\"ordId\":"
 		out.RawString(prefix[1:])
 		out.String(string(in.OrderID))
 	}
 	{
-		const prefix string = ",\"client_oid\":"
+		const prefix string = ",\"clOrdId\":"
 		out.RawString(prefix)
 		out.String(string(in.ClientOrderID))
 	}
 	{
-		const prefix string = ",\"timestamp\":"
+		const prefix string = ",\"cTime\":"
 		out.RawString(prefix)
-		out.Raw((in.Timestamp).MarshalJSON())
+		out.String(string(in.Timestamp))
 	}
 	{
-		const prefix string = ",\"price\":"
+		const prefix string = ",\"px\":"
 		out.RawString(prefix)
 		out.Raw((in.Price).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"price_avg\":"
+		const prefix string = ",\"avgPx\":"
+		out.RawString(prefix)
+		out.String(string(in.PriceAvgStr))
+	}
+	{
+		const prefix string = ",\"PriceAvg\":"
 		out.RawString(prefix)
 		out.Raw((in.PriceAvg).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"size\":"
+		const prefix string = ",\"sz\":"
 		out.RawString(prefix)
 		out.Raw((in.Quantity).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"filled_size\":"
+		const prefix string = ",\"accFillSz\":"
 		out.RawString(prefix)
 		out.Raw((in.QuantityFilled).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"filled_notional\":"
+		const prefix string = ",\"Total\":"
 		out.RawString(prefix)
 		out.Raw((in.Total).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"notional\":"
+		const prefix string = ",\"pnl\":"
 		out.RawString(prefix)
-		out.String(string(in.Notional))
+		out.Raw((in.ProfitAndLoss).MarshalJSON())
 	}
 	{
-		const prefix string = ",\"instrument_id\":"
+		const prefix string = ",\"fee\":"
+		out.RawString(prefix)
+		out.Raw((in.Fee).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"feeCcy\":"
+		out.RawString(prefix)
+		out.String(string(in.FeeCurrency))
+	}
+	{
+		const prefix string = ",\"instId\":"
 		out.RawString(prefix)
 		out.String(string(in.Pair))
 	}
 	{
-		const prefix string = ",\"type\":"
+		const prefix string = ",\"tag\":"
+		out.RawString(prefix)
+		out.String(string(in.Tag))
+	}
+	{
+		const prefix string = ",\"posSide\":"
+		out.RawString(prefix)
+		out.String(string(in.PosSide))
+	}
+	{
+		const prefix string = ",\"ordType\":"
 		out.RawString(prefix)
 		out.String(string(in.Type))
 	}
@@ -1905,11 +2430,6 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(out *jw
 		const prefix string = ",\"side\":"
 		out.RawString(prefix)
 		out.String(string(in.Side))
-	}
-	{
-		const prefix string = ",\"order_type\":"
-		out.RawString(prefix)
-		out.String(string(in.Strategy))
 	}
 	{
 		const prefix string = ",\"state\":"
@@ -1922,27 +2442,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(out *jw
 // MarshalJSON supports json.Marshaler interface
 func (v Order) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi23(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Order) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi23(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Order) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi23(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Order) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi17(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi23(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(in *jlexer.Lexer, out *Depth400UpdateWS) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi24(in *jlexer.Lexer, out *Depth400UpdateWS) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -1981,17 +2501,17 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(in *jle
 					out.Data = (out.Data)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v19 *Depth400Data
+					var v28 *Depth400Data
 					if in.IsNull() {
 						in.Skip()
-						v19 = nil
+						v28 = nil
 					} else {
-						if v19 == nil {
-							v19 = new(Depth400Data)
+						if v28 == nil {
+							v28 = new(Depth400Data)
 						}
-						(*v19).UnmarshalEasyJSON(in)
+						(*v28).UnmarshalEasyJSON(in)
 					}
-					out.Data = append(out.Data, v19)
+					out.Data = append(out.Data, v28)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2006,7 +2526,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(out *jwriter.Writer, in Depth400UpdateWS) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi24(out *jwriter.Writer, in Depth400UpdateWS) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2027,14 +2547,14 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(out *jw
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v20, v21 := range in.Data {
-				if v20 > 0 {
+			for v29, v30 := range in.Data {
+				if v29 > 0 {
 					out.RawByte(',')
 				}
-				if v21 == nil {
+				if v30 == nil {
 					out.RawString("null")
 				} else {
-					(*v21).MarshalEasyJSON(out)
+					(*v30).MarshalEasyJSON(out)
 				}
 			}
 			out.RawByte(']')
@@ -2046,27 +2566,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(out *jw
 // MarshalJSON supports json.Marshaler interface
 func (v Depth400UpdateWS) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi24(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Depth400UpdateWS) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi24(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Depth400UpdateWS) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi24(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Depth400UpdateWS) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi18(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi24(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(in *jlexer.Lexer, out *Depth400PartialWS) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi25(in *jlexer.Lexer, out *Depth400PartialWS) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2105,17 +2625,17 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(in *jle
 					out.Data = (out.Data)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v22 *Depth400Data
+					var v31 *Depth400Data
 					if in.IsNull() {
 						in.Skip()
-						v22 = nil
+						v31 = nil
 					} else {
-						if v22 == nil {
-							v22 = new(Depth400Data)
+						if v31 == nil {
+							v31 = new(Depth400Data)
 						}
-						(*v22).UnmarshalEasyJSON(in)
+						(*v31).UnmarshalEasyJSON(in)
 					}
-					out.Data = append(out.Data, v22)
+					out.Data = append(out.Data, v31)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2130,7 +2650,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(out *jwriter.Writer, in Depth400PartialWS) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi25(out *jwriter.Writer, in Depth400PartialWS) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2151,14 +2671,14 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(out *jw
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v23, v24 := range in.Data {
-				if v23 > 0 {
+			for v32, v33 := range in.Data {
+				if v32 > 0 {
 					out.RawByte(',')
 				}
-				if v24 == nil {
+				if v33 == nil {
 					out.RawString("null")
 				} else {
-					(*v24).MarshalEasyJSON(out)
+					(*v33).MarshalEasyJSON(out)
 				}
 			}
 			out.RawByte(']')
@@ -2170,27 +2690,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(out *jw
 // MarshalJSON supports json.Marshaler interface
 func (v Depth400PartialWS) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi25(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Depth400PartialWS) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi25(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Depth400PartialWS) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi25(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Depth400PartialWS) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi19(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi25(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(in *jlexer.Lexer, out *Depth400Data) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi26(in *jlexer.Lexer, out *Depth400Data) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2227,18 +2747,18 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(in *jle
 					out.Asks = (out.Asks)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v25 [3]decimal.Decimal
+					var v34 [3]decimal.Decimal
 					if in.IsNull() {
 						in.Skip()
 					} else {
 						in.Delim('[')
-						v26 := 0
+						v35 := 0
 						for !in.IsDelim(']') {
-							if v26 < 3 {
+							if v35 < 3 {
 								if data := in.Raw(); in.Ok() {
-									in.AddError(((v25)[v26]).UnmarshalJSON(data))
+									in.AddError(((v34)[v35]).UnmarshalJSON(data))
 								}
-								v26++
+								v35++
 							} else {
 								in.SkipRecursive()
 							}
@@ -2246,7 +2766,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(in *jle
 						}
 						in.Delim(']')
 					}
-					out.Asks = append(out.Asks, v25)
+					out.Asks = append(out.Asks, v34)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2267,18 +2787,18 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(in *jle
 					out.Bids = (out.Bids)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v27 [3]decimal.Decimal
+					var v36 [3]decimal.Decimal
 					if in.IsNull() {
 						in.Skip()
 					} else {
 						in.Delim('[')
-						v28 := 0
+						v37 := 0
 						for !in.IsDelim(']') {
-							if v28 < 3 {
+							if v37 < 3 {
 								if data := in.Raw(); in.Ok() {
-									in.AddError(((v27)[v28]).UnmarshalJSON(data))
+									in.AddError(((v36)[v37]).UnmarshalJSON(data))
 								}
-								v28++
+								v37++
 							} else {
 								in.SkipRecursive()
 							}
@@ -2286,7 +2806,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(in *jle
 						}
 						in.Delim(']')
 					}
-					out.Bids = append(out.Bids, v27)
+					out.Bids = append(out.Bids, v36)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -2307,7 +2827,7 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(out *jwriter.Writer, in Depth400Data) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi26(out *jwriter.Writer, in Depth400Data) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -2323,16 +2843,16 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(out *jw
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v29, v30 := range in.Asks {
-				if v29 > 0 {
+			for v38, v39 := range in.Asks {
+				if v38 > 0 {
 					out.RawByte(',')
 				}
 				out.RawByte('[')
-				for v31 := range v30 {
-					if v31 > 0 {
+				for v40 := range v39 {
+					if v40 > 0 {
 						out.RawByte(',')
 					}
-					out.Raw(((v30)[v31]).MarshalJSON())
+					out.Raw(((v39)[v40]).MarshalJSON())
 				}
 				out.RawByte(']')
 			}
@@ -2346,16 +2866,16 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(out *jw
 			out.RawString("null")
 		} else {
 			out.RawByte('[')
-			for v32, v33 := range in.Bids {
-				if v32 > 0 {
+			for v41, v42 := range in.Bids {
+				if v41 > 0 {
 					out.RawByte(',')
 				}
 				out.RawByte('[')
-				for v34 := range v33 {
-					if v34 > 0 {
+				for v43 := range v42 {
+					if v43 > 0 {
 						out.RawByte(',')
 					}
-					out.Raw(((v33)[v34]).MarshalJSON())
+					out.Raw(((v42)[v43]).MarshalJSON())
 				}
 				out.RawByte(']')
 			}
@@ -2378,27 +2898,27 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(out *jw
 // MarshalJSON supports json.Marshaler interface
 func (v Depth400Data) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi26(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Depth400Data) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi26(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Depth400Data) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi26(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Depth400Data) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi20(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi26(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(in *jlexer.Lexer, out *AccountCurrency) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi27(in *jlexer.Lexer, out *AccountCurrency) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -2417,17 +2937,27 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(in *jle
 			continue
 		}
 		switch key {
-		case "can_deposit":
-			out.CanDeposit = BoolNum(in.String())
-		case "can_withdraw":
-			out.CanWithdraw = BoolNum(in.String())
-		case "currency":
+		case "canDep":
+			out.CanDeposit = bool(in.Bool())
+		case "canWd":
+			out.CanWithdraw = bool(in.Bool())
+		case "canInternal":
+			out.CanInternal = bool(in.Bool())
+		case "ccy":
 			out.Currency = string(in.String())
 		case "name":
 			out.FullName = string(in.String())
-		case "min_withdrawal":
+		case "minWd":
 			if data := in.Raw(); in.Ok() {
 				in.AddError((out.MinWithdrawal).UnmarshalJSON(data))
+			}
+		case "maxFee":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.MaxFee).UnmarshalJSON(data))
+			}
+		case "minFee":
+			if data := in.Raw(); in.Ok() {
+				in.AddError((out.MinFee).UnmarshalJSON(data))
 			}
 		default:
 			in.SkipRecursive()
@@ -2439,22 +2969,27 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(out *jwriter.Writer, in AccountCurrency) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi27(out *jwriter.Writer, in AccountCurrency) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
-		const prefix string = ",\"can_deposit\":"
+		const prefix string = ",\"canDep\":"
 		out.RawString(prefix[1:])
-		out.String(string(in.CanDeposit))
+		out.Bool(bool(in.CanDeposit))
 	}
 	{
-		const prefix string = ",\"can_withdraw\":"
+		const prefix string = ",\"canWd\":"
 		out.RawString(prefix)
-		out.String(string(in.CanWithdraw))
+		out.Bool(bool(in.CanWithdraw))
 	}
 	{
-		const prefix string = ",\"currency\":"
+		const prefix string = ",\"canInternal\":"
+		out.RawString(prefix)
+		out.Bool(bool(in.CanInternal))
+	}
+	{
+		const prefix string = ",\"ccy\":"
 		out.RawString(prefix)
 		out.String(string(in.Currency))
 	}
@@ -2464,9 +2999,19 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(out *jw
 		out.String(string(in.FullName))
 	}
 	{
-		const prefix string = ",\"min_withdrawal\":"
+		const prefix string = ",\"minWd\":"
 		out.RawString(prefix)
 		out.Raw((in.MinWithdrawal).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"maxFee\":"
+		out.RawString(prefix)
+		out.Raw((in.MaxFee).MarshalJSON())
+	}
+	{
+		const prefix string = ",\"minFee\":"
+		out.RawString(prefix)
+		out.Raw((in.MinFee).MarshalJSON())
 	}
 	out.RawByte('}')
 }
@@ -2474,27 +3019,93 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(out *jw
 // MarshalJSON supports json.Marshaler interface
 func (v AccountCurrency) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi27(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v AccountCurrency) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi27(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *AccountCurrency) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi27(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *AccountCurrency) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi21(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi27(l, v)
 }
-func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(in *jlexer.Lexer, out *AccountCurrenciesList) {
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi28(in *jlexer.Lexer, out *AccountCurrenciesListWrapper) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "data":
+			(out.Data).UnmarshalEasyJSON(in)
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi28(out *jwriter.Writer, in AccountCurrenciesListWrapper) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	{
+		const prefix string = ",\"data\":"
+		out.RawString(prefix[1:])
+		(in.Data).MarshalEasyJSON(out)
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v AccountCurrenciesListWrapper) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi28(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v AccountCurrenciesListWrapper) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi28(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *AccountCurrenciesListWrapper) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi28(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *AccountCurrenciesListWrapper) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi28(l, v)
+}
+func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi29(in *jlexer.Lexer, out *AccountCurrenciesList) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		in.Skip()
@@ -2511,17 +3122,17 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(in *jle
 			*out = (*out)[:0]
 		}
 		for !in.IsDelim(']') {
-			var v35 *AccountCurrency
+			var v44 *AccountCurrency
 			if in.IsNull() {
 				in.Skip()
-				v35 = nil
+				v44 = nil
 			} else {
-				if v35 == nil {
-					v35 = new(AccountCurrency)
+				if v44 == nil {
+					v44 = new(AccountCurrency)
 				}
-				(*v35).UnmarshalEasyJSON(in)
+				(*v44).UnmarshalEasyJSON(in)
 			}
-			*out = append(*out, v35)
+			*out = append(*out, v44)
 			in.WantComma()
 		}
 		in.Delim(']')
@@ -2530,19 +3141,19 @@ func easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(in *jle
 		in.Consumed()
 	}
 }
-func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(out *jwriter.Writer, in AccountCurrenciesList) {
+func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi29(out *jwriter.Writer, in AccountCurrenciesList) {
 	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
 	} else {
 		out.RawByte('[')
-		for v36, v37 := range in {
-			if v36 > 0 {
+		for v45, v46 := range in {
+			if v45 > 0 {
 				out.RawByte(',')
 			}
-			if v37 == nil {
+			if v46 == nil {
 				out.RawString("null")
 			} else {
-				(*v37).MarshalEasyJSON(out)
+				(*v46).MarshalEasyJSON(out)
 			}
 		}
 		out.RawByte(']')
@@ -2552,23 +3163,23 @@ func easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(out *jw
 // MarshalJSON supports json.Marshaler interface
 func (v AccountCurrenciesList) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(&w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi29(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v AccountCurrenciesList) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(w, v)
+	easyjson490fdbeeEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi29(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *AccountCurrenciesList) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(&r, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi29(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *AccountCurrenciesList) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi22(l, v)
+	easyjson490fdbeeDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi29(l, v)
 }

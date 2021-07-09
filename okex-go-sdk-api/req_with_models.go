@@ -9,18 +9,32 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type StateStatus string
+
+const (
+	StateStatusLive    StateStatus = "live"
+	StateStatusSuspend StateStatus = "suspend"
+	StateStatusPreopen StateStatus = "preopen"
+)
+
 //easyjson:json
 type SpotInstrument struct {
-	BaseCurrency  string          `json:"base_currency"`
-	QuoteCurrency string          `json:"quote_currency"` // Main coin
-	Pair          string          `json:"instrument_id"`
-	MinSize       decimal.Decimal `json:"min_size"`
-	SizeIncrement decimal.Decimal `json:"size_increment"`
-	TickSize      decimal.Decimal `json:"tick_size"`
+	BaseCurrency  string          `json:"baseCcy"`
+	QuoteCurrency string          `json:"quoteCcy"` // Main coin
+	Pair          string          `json:"instId"`
+	MinSize       decimal.Decimal `json:"minSz"`
+	SizeIncrement decimal.Decimal `json:"lotSz"`
+	TickSize      decimal.Decimal `json:"tickSz"`
+	State         StateStatus     `json:"state"`
 }
 
 //easyjson:json
 type SpotInstrumentsList []*SpotInstrument
+
+//easyjson:json
+type SpotInstrumentsListWrapper struct {
+	Data SpotInstrumentsList `json:"data"`
+}
 
 type BoolNum string
 
@@ -35,70 +49,86 @@ func (b BoolNum) IsTrue() bool {
 
 //easyjson:json
 type AccountCurrency struct {
-	CanDeposit    BoolNum         `json:"can_deposit"`  // "1" == true
-	CanWithdraw   BoolNum         `json:"can_withdraw"` // "1" == true
-	Currency      string          `json:"currency"`
-	FullName      string          `json:"name"`
-	MinWithdrawal decimal.Decimal `json:"min_withdrawal"`
+	CanDeposit    bool            `json:"canDep"`
+	CanWithdraw   bool            `json:"canWd"`
+	CanInternal   bool            `json:"canInternal"`
+	Currency      string          `json:"ccy"`
+	FullName      string          `json:"name"` // TODO: where?
+	MinWithdrawal decimal.Decimal `json:"minWd"`
+	MaxFee        decimal.Decimal `json:"maxFee"`
+	MinFee        decimal.Decimal `json:"minFee"`
 }
 
 //easyjson:json
 type AccountCurrenciesList []*AccountCurrency
 
 //easyjson:json
+type AccountCurrenciesListWrapper struct {
+	Data AccountCurrenciesList `json:"data"`
+}
+
+//easyjson:json
 type SpotInstrumentTicker struct {
-	Ask            decimal.Decimal `json:"ask"`
-	Bid            decimal.Decimal `json:"bid"`
-	BestAsk        decimal.Decimal `json:"best_ask"`
-	BestBid        decimal.Decimal `json:"best_bid"`
-	BestAskSize    decimal.Decimal `json:"best_ask_size"`
-	BestBidSize    decimal.Decimal `json:"best_bid_size"`
-	BaseVolume24h  decimal.Decimal `json:"base_volume_24h"`
-	QuoteVolume24h decimal.Decimal `json:"quote_volume_24h"` // In main coin (like total)
-	High24h        decimal.Decimal `json:"high_24h"`
-	Low24h         decimal.Decimal `json:"low_24h"`
-	Open24h        decimal.Decimal `json:"open_24h"`
+	BestAsk        decimal.Decimal `json:"askPx"`
+	BestBid        decimal.Decimal `json:"bidPx"`
+	BestAskSize    decimal.Decimal `json:"askSz"`
+	BestBidSize    decimal.Decimal `json:"bidSz"`
+	BaseVolume24h  decimal.Decimal `json:"vol24h"`
+	QuoteVolume24h decimal.Decimal `json:"volCcy24h"` // In main coin (like total)
+	High24h        decimal.Decimal `json:"high24h"`
+	Low24h         decimal.Decimal `json:"low24h"`
+	Open24h        decimal.Decimal `json:"open24h"`
 	Last           decimal.Decimal `json:"last"`
-	LastQty        decimal.Decimal `json:"last_qty"`
-	Timestamp      time.Time       `json:"timestamp"`
-	Pair           string          `json:"instrument_id"`
-	ProductID      string          `json:"product_id"` // TODO instrument_id == product_id ?
+	LastQty        decimal.Decimal `json:"lastSz"`
+	Timestamp      string          `json:"ts"` // milliseconds
+	Pair           string          `json:"instId"`
+	Type           string          `json:"instType"`
 }
 
 //easyjson:json
 type SpotInstrumentsTickerList []*SpotInstrumentTicker
 
 //easyjson:json
+type SpotInstrumentsTickerListWrapper struct {
+	Data SpotInstrumentsTickerList `json:"data"`
+}
+
+//easyjson:json
 type SpotAccountBalance struct {
-	Frozen    decimal.Decimal `json:"frozen"`
-	Hold      decimal.Decimal `json:"hold"` // Amount on hold (not available)
-	AccountID string          `json:"id"`
-	Currency  string          `json:"currency"`
-	Balance   decimal.Decimal `json:"balance"`   // Remaining balance
-	Available decimal.Decimal `json:"available"` // Available amount
-	Holds     decimal.Decimal `json:"holds"`     // TODO ?
+	Frozen    decimal.Decimal `json:"frozenBal"`
+	Currency  string          `json:"ccy"`
+	Balance   decimal.Decimal `json:"bal"`      // Remaining balance
+	Available decimal.Decimal `json:"availBal"` // Available amount
 }
 
 //easyjson:json
 type SpotAccountBalancesList []*SpotAccountBalance
 
 //easyjson:json
+type SpotAccountBalancesListWrapper struct {
+	Data SpotAccountBalancesList `json:"data"`
+}
+
+//easyjson:json
 type SpotOrderResponse struct {
-	OrderID       string `json:"order_id"` // TODO may use like a number?
-	ClientOrderID string `json:"client_oid"`
-	ErrorMessage  string `json:"error_message"`
-	ErrorCode     string `json:"error_code"`
-	Result        bool   `json:"result"`
+	OrderID       string `json:"ordId"`
+	ClientOrderID string `json:"clOrdId"`
+	SCode         string `json:"sCode"`
+	SMsg          string `json:"sMsg"`
+	Tag           string `json:"tag"`
 }
 
 //easyjson:json
 type SpotNewOrderResponse struct {
-	*SpotOrderResponse
+	Code string               `json:"code"` // good = 1
+	Msg  string               `json:"msg"`
+	Data []*SpotOrderResponse `json:"data"`
 }
 
 //easyjson:json
-type SpotCancelOrderResponse struct {
-	*SpotOrderResponse
+type SpotCancelOrderResponseWrapper struct {
+	Code string               `json:"code"` // good = 1
+	Data []*SpotOrderResponse `json:"data"`
 }
 
 type OrderSide string
@@ -115,8 +145,12 @@ func (o OrderSide) IsBuy() bool {
 type OrderType string
 
 const (
-	OrderTypeLimit  OrderType = "limit"
-	OrderTypeMarket OrderType = "market"
+	OrderTypeLimit           OrderType = "limit"
+	OrderTypeMarket          OrderType = "market"
+	OrderTypeFOK             OrderType = "fok" // TODO: why without errors if not full filled?
+	OrderTypeIOC             OrderType = "ioc"
+	OrderTypePostOnly        OrderType = "post_only"
+	OrderTypeOptimalLimitIOC OrderType = "optimal_limit_ioc"
 )
 
 type OrderStrategy string
@@ -131,52 +165,69 @@ const (
 type OrderStatus string
 
 const (
-	OrderStatusFailed          OrderStatus = "-2"
-	OrderStatusCanceled        OrderStatus = "-1"
-	OrderStatusOpen            OrderStatus = "0"
-	OrderStatusPartiallyFilled OrderStatus = "1"
-	OrderStatusFullyFilled     OrderStatus = "2"
-	OrderStatusSubmitting      OrderStatus = "3"
-	OrderStatusCanceling       OrderStatus = "4"
+	OrderStatusCanceled        OrderStatus = "canceled"
+	OrderStatusOpen            OrderStatus = "live"
+	OrderStatusPartiallyFilled OrderStatus = "partially_filled"
+	OrderStatusFullyFilled     OrderStatus = "filled"
 )
 
 //easyjson:json
 type Order struct {
-	OrderID        string          `json:"order_id"` // TODO may use like a number?
-	ClientOrderID  string          `json:"client_oid"`
-	Timestamp      time.Time       `json:"timestamp"` // TODO or use 'created_at'?
-	Price          decimal.Decimal `json:"price"`
-	PriceAvg       decimal.Decimal `json:"price_avg"`
-	Quantity       decimal.Decimal `json:"size"`
-	QuantityFilled decimal.Decimal `json:"filled_size"`
-	Total          decimal.Decimal `json:"filled_notional"` // TODO sure?
-	Notional       string          `json:"notional"`        // TODO ? buy (for market orders)
-	Pair           string          `json:"instrument_id"`
-	Type           OrderType       `json:"type"`       // Order type: limit or market (default: limit)
-	Side           OrderSide       `json:"side"`       // 'buy' or 'sell'
-	Strategy       OrderStrategy   `json:"order_type"` // Specify 0: Normal order (Unfilled and 0 imply normal limit order) 1: Post only 2: Fill or Kill 3: Immediate Or Cancel
-	Status         OrderStatus     `json:"state"`      // Order Status: -2 = Failed -1 = Canceled 0 = Open 1 = Partially Filled 2 = Fully Filled 3 = Submitting 4 = Canceling
+	OrderID        string          `json:"ordId"`
+	ClientOrderID  string          `json:"clOrdId"`
+	Timestamp      string          `json:"cTime"` // Creation time, Unix timestamp format in milliseconds, e.g. 1597026383085
+	Price          decimal.Decimal `json:"px"`
+	PriceAvgStr    string          `json:"avgPx"` // Average filled price. If none is filled, it will return 0.
+	PriceAvg       decimal.Decimal // Average filled price. If none is filled, it will return 0.
+	Quantity       decimal.Decimal `json:"sz"`
+	QuantityFilled decimal.Decimal `json:"accFillSz"`
+	Total          decimal.Decimal
+	ProfitAndLoss  decimal.Decimal `json:"pnl"`
+	Fee            decimal.Decimal `json:"fee"`
+	FeeCurrency    string          `json:"feeCcy"`
+	Pair           string          `json:"instId"`
+	Tag            string          `json:"tag"`
+	PosSide        string          `json:"posSide"` // net, ...
+	Type           OrderType       `json:"ordType"`
+	Side           OrderSide       `json:"side"`  // 'buy' or 'sell'
+	Status         OrderStatus     `json:"state"` // Order Status: -2 = Failed -1 = Canceled 0 = Open 1 = Partially Filled 2 = Fully Filled 3 = Submitting 4 = Canceling
 }
 
 //easyjson:json
 type OrdersList []*Order
 
 //easyjson:json
+type OrdersListWrapper struct {
+	Data OrdersList `json:"data"`
+}
+
+//easyjson:json
 type TradeFee struct {
-	Maker     decimal.Decimal `json:"maker"`
-	Taker     decimal.Decimal `json:"taker"`
-	Timestamp time.Time       `json:"timestamp"`
+	Maker     decimal.Decimal `json:"maker"` // can be less than 0
+	Taker     decimal.Decimal `json:"taker"` // can be less than 0
+	Timestamp string          `json:"ts"`    // milliseconds
+}
+
+//easyjson:json
+type TradeFeeListWrapper struct {
+	Data []*TradeFee `json:"data"`
 }
 
 //easyjson:json
 type WithdrawalFee struct {
-	Currency string          `json:"currency"`
-	MaxFee   decimal.Decimal `json:"max_fee"`
-	MinFee   decimal.Decimal `json:"min_fee"`
+	Currency      string          `json:"ccy"`
+	MinWithdrawal decimal.Decimal `json:"minWd"`
+	MaxFee        decimal.Decimal `json:"maxFee"`
+	MinFee        decimal.Decimal `json:"minFee"`
 }
 
 //easyjson:json
 type WithdrawalFeesList []*WithdrawalFee
+
+//easyjson:json
+type WithdrawalFeesListWrapper struct {
+	Data WithdrawalFeesList `json:"data"`
+}
 
 //easyjson:json
 type OrderUpdateWS struct {
@@ -259,7 +310,7 @@ var ( // LIMIT
 )
 
 func (client *Client) LimitedGetSpotAccounts() (SpotAccountBalancesList, error) {
-	r := SpotAccountBalancesList{}
+	r := SpotAccountBalancesListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
 
@@ -269,39 +320,65 @@ func (client *Client) LimitedGetSpotAccounts() (SpotAccountBalancesList, error) 
 	})
 
 	<-ch
-	return r, err
+	return r.Data, err
 }
 
 func (client *Client) LimitedGetSpotInstrumentsTicker() (SpotInstrumentsTickerList, error) {
-	r := SpotInstrumentsTickerList{}
+	r := SpotInstrumentsTickerListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
 
+	options := NewParams()
+	options["instType"] = "SPOT"
+	uri := BuildParams(SPOT_INSTRUMENTS_TICKER, options)
+
 	spotTickersLimit.Wait(func() {
-		_, err = client.Request(GET, SPOT_INSTRUMENTS_TICKER, nil, &r)
+		_, err = client.Request(GET, uri, nil, &r)
 		ch <- nil
 	})
 
 	<-ch
-	return r, err
+	return r.Data, err
+}
+
+func (client *Client) LimitedGetSpotInstrumentTicker(instID string) (SpotInstrumentsTickerList, error) {
+	r := SpotInstrumentsTickerListWrapper{}
+	ch := make(chan interface{}, 2)
+	var err error
+
+	options := NewParams()
+	options["instId"] = instID
+	uri := BuildParams(SPOT_INSTRUMENT_TICKER, options)
+
+	spotTickersLimit.Wait(func() {
+		_, err = client.Request(GET, uri, nil, &r)
+		ch <- nil
+	})
+
+	<-ch
+	return r.Data, err
 }
 
 func (client *Client) LimitedGetSpotInstruments() (SpotInstrumentsList, error) {
-	r := SpotInstrumentsList{}
+	r := SpotInstrumentsListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
 
+	options := NewParams()
+	options["instType"] = "SPOT"
+	uri := BuildParams(SPOT_INSTRUMENTS, options)
+
 	spotInstrumentsLimit.Wait(func() {
-		_, err = client.Request(GET, SPOT_INSTRUMENTS, nil, &r)
+		_, err = client.Request(GET, uri, nil, &r)
 		ch <- nil
 	})
 
 	<-ch
-	return r, err
+	return r.Data, err
 }
 
 func (client *Client) LimitedGetAccountCurrencies() (AccountCurrenciesList, error) {
-	r := AccountCurrenciesList{}
+	r := AccountCurrenciesListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
 
@@ -311,17 +388,17 @@ func (client *Client) LimitedGetAccountCurrencies() (AccountCurrenciesList, erro
 	})
 
 	<-ch
-	return r, err
+	return r.Data, err
 }
 
-func (client *Client) LimitedGetAllSpotOrders(status OrderStatus, pair string) (list OrdersList, err error) {
+func (client *Client) LimitedGetAllSpotOpenedOrders(status OrderStatus, pair string, isOpened bool) (list OrdersList, err error) {
 	var data OrdersList
 	limit := 100
 	limitStr := strconv.Itoa(limit)
 	afterID, beforeID := "", ""
 
 	for {
-		data, err = client.LimitedGetSpotOrders(status, pair, afterID, beforeID, limitStr)
+		data, err = client.LimitedGetSpotOpenedOrders(status, pair, afterID, beforeID, limitStr, isOpened)
 		if err != nil {
 			return
 		}
@@ -337,18 +414,23 @@ func (client *Client) LimitedGetAllSpotOrders(status OrderStatus, pair string) (
 	return
 }
 
-func (client *Client) LimitedGetSpotOrders(status OrderStatus, pair string, afterID string, beforeID string, limit string) (OrdersList, error) {
-	r := OrdersList{}
+func (client *Client) LimitedGetSpotOpenedOrders(status OrderStatus, pair string, afterID string, beforeID string, limit string, isOpened bool) (OrdersList, error) {
+	r := OrdersListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
 
 	options := NewParams()
-	options["instrument_id"] = pair
+	options["instType"] = "SPOT"
+	options["instId"] = pair
 	options["state"] = string(status)
 	options["after"] = afterID
 	options["before"] = beforeID
 	options["limit"] = limit
-	uri := BuildParams(SPOT_ORDERS, options)
+	url := SPOT_ORDERS_OPENED
+	if !isOpened {
+		url = SPOT_ORDERS_CLOSED
+	}
+	uri := BuildParams(url, options)
 
 	spotOrderListLimit.Wait(func() {
 		_, err = client.Request(GET, uri, nil, &r)
@@ -356,17 +438,30 @@ func (client *Client) LimitedGetSpotOrders(status OrderStatus, pair string, afte
 	})
 
 	<-ch
-	return r, err
+
+	for _, order := range r.Data {
+		err = calcOrderFields(order)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return r.Data, err
 }
 
-func (client *Client) LimitedGetSpotOrdersByID(pair, orderOrClientID string) (*Order, error) {
-	r := &Order{}
+func (client *Client) LimitedGetSpotOrdersByID(pair, orderID, clientOrderID string) (*Order, error) {
+	r := &OrdersListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
-	uri := SPOT_ORDERS + "/" + orderOrClientID
+
 	options := NewParams()
-	options["instrument_id"] = pair
-	uri = BuildParams(uri, options)
+	options["instId"] = pair
+	if orderID != "" {
+		options["ordId"] = orderID
+	}
+	if clientOrderID != "" {
+		options["clOrdId"] = clientOrderID
+	}
+	uri := BuildParams(SPOT_ORDERS_DETAILS, options)
 
 	spotOrderDetailsLimit.Wait(func() {
 		_, err = client.Request(GET, uri, nil, r)
@@ -374,17 +469,56 @@ func (client *Client) LimitedGetSpotOrdersByID(pair, orderOrClientID string) (*O
 	})
 
 	<-ch
-	return r, err
+
+	order := r.Data[0]
+	err = calcOrderFields(order)
+	if err != nil {
+		return nil, err
+	}
+	return order, err
 }
 
-func (client *Client) LimitedSpotCancelOrders(pair, orderOrClientID string) (*SpotCancelOrderResponse, error) {
-	r := &SpotCancelOrderResponse{}
+func calcOrderFields(order *Order) (err error) {
+	if order.PriceAvgStr != "" {
+		order.PriceAvg, err = decimal.NewFromString(order.PriceAvgStr)
+		if err != nil {
+			return
+		}
+	}
+
+	if order.PriceAvg.IsPositive() {
+		order.Total = order.QuantityFilled.Mul(order.PriceAvg)
+	} else if order.QuantityFilled.IsPositive() && order.Price.IsPositive() {
+		order.Total = order.QuantityFilled.Mul(order.Price)
+	}
+
+	return
+}
+
+func calcTotal(priceAvg, quantityFilled, price decimal.Decimal) decimal.Decimal {
+	if priceAvg.IsPositive() {
+		return quantityFilled.Mul(priceAvg)
+	} else if quantityFilled.IsPositive() && price.IsPositive() {
+		return quantityFilled.Mul(price)
+	} else {
+		return decimal.Decimal{}
+	}
+}
+
+func (client *Client) LimitedSpotCancelOrders(pair, orderID, clientOrderID string) (*SpotCancelOrderResponseWrapper, error) {
+	r := &SpotCancelOrderResponseWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
 
-	uri := "/api/spot/v3/cancel_orders/" + orderOrClientID
 	options := NewParams()
-	options["instrument_id"] = pair
+	options["instId"] = pair
+	if orderID != "" {
+		options["ordId"] = orderID
+	}
+	if clientOrderID != "" {
+		options["clOrdId"] = clientOrderID
+	}
+	uri := BuildParams(SPOT_CANCEL_ORDERS_BY_ID, options)
 
 	spotCancelOrderLimit.Wait(func() {
 		_, err = client.Request(POST, uri, options, r)
@@ -395,27 +529,26 @@ func (client *Client) LimitedSpotCancelOrders(pair, orderOrClientID string) (*Sp
 	return r, err
 }
 
-func (client *Client) LimitedPostSpotOrders(side OrderSide, orderType OrderType, strategy OrderStrategy, pair string, price, quantity decimal.Decimal, notional string) (*SpotNewOrderResponse, error) {
+// LimitedPostSpotOrders - clOrdId can be empty
+func (client *Client) LimitedPostSpotOrders(side OrderSide, orderType OrderType, pair string, price, quantity decimal.Decimal, clientOrderID string) (*SpotNewOrderResponse, error) {
 	r := &SpotNewOrderResponse{}
 	ch := make(chan interface{}, 2)
 	var err error
 
 	postParams := NewParams()
 	postParams["side"] = string(side)
-	postParams["instrument_id"] = pair
-	postParams["type"] = string(orderType)
-	postParams["order_type"] = string(strategy)
-
-	if orderType == OrderTypeLimit {
-		postParams["price"] = price.String()
-		postParams["size"] = quantity.String()
-	} else {
-		postParams["size"] = quantity.String()
-		postParams["notional"] = notional
+	postParams["instId"] = pair
+	postParams["ordType"] = string(orderType)
+	postParams["px"] = price.String()
+	postParams["sz"] = quantity.String()
+	postParams["tdMode"] = "cash"
+	if clientOrderID != "" {
+		postParams["clOrdId"] = clientOrderID
 	}
+	// posSide ? long/short
 
 	spotPlaceOrderLimit.Wait(func() {
-		_, err = client.Request(POST, SPOT_ORDERS, postParams, &r)
+		_, err = client.Request(POST, PLEACE_SPOT_ORDERS, postParams, &r)
 		ch <- nil
 	})
 
@@ -424,37 +557,34 @@ func (client *Client) LimitedPostSpotOrders(side OrderSide, orderType OrderType,
 }
 
 func (client *Client) LimitedGetSpotTradeFee(category string) (*TradeFee, error) {
-	r := &TradeFee{}
+	r := &TradeFeeListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
+
+	options := NewParams()
+	options["instType"] = "SPOT"
+	options["category"] = category
+	uri := BuildParams(SPOT_TRADE_FEE, options)
 
 	spotTradeFeeLimit.Wait(func() {
-		_, err = client.Request(GET, "/api/spot/v3/trade_fee?category="+category, nil, r)
+		_, err = client.Request(GET, uri, nil, r)
 		ch <- nil
 	})
 
 	<-ch
-	return r, err
+	return r.Data[0], err
 }
 
-// LimitedGetWithdrawalFee arg currency not required
-func (client *Client) LimitedGetWithdrawalFee(currency string) (WithdrawalFeesList, error) {
-	r := WithdrawalFeesList{}
+func (client *Client) LimitedGetWithdrawalFee() (WithdrawalFeesList, error) {
+	r := WithdrawalFeesListWrapper{}
 	ch := make(chan interface{}, 2)
 	var err error
 
-	uri := ACCOUNT_WITHRAWAL_FEE
-	if currency != "" {
-		params := NewParams()
-		params["currency"] = currency
-		uri = BuildParams(uri, params)
-	}
-
 	withdrawalFeeLimit.Wait(func() {
-		_, err = client.Request(GET, uri, nil, &r)
+		_, err = client.Request(GET, ACCOUNT_WITHRAWAL_FEE, nil, &r)
 		ch <- nil
 	})
 
 	<-ch
-	return r, err
+	return r.Data, err
 }
