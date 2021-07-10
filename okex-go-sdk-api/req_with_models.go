@@ -95,10 +95,13 @@ type SpotInstrumentsTickerListWrapper struct {
 
 //easyjson:json
 type SpotAccountBalance struct {
-	Frozen    decimal.Decimal `json:"frozenBal"`
-	Currency  string          `json:"ccy"`
-	Balance   decimal.Decimal `json:"bal"`      // Remaining balance
-	Available decimal.Decimal `json:"availBal"` // Available amount
+	Details []struct {
+		Frozen    decimal.Decimal `json:"frozenBal"`
+		Currency  string          `json:"ccy"`
+		EqUSD     decimal.Decimal `json:"eqUsd"`
+		Balance   decimal.Decimal `json:"cashBal"`  // Remaining balance
+		Available decimal.Decimal `json:"availBal"` // Available amount
+	} `json:"details"`
 }
 
 //easyjson:json
@@ -187,7 +190,7 @@ type Order struct {
 	FeeCurrency    string          `json:"feeCcy"`
 	Pair           string          `json:"instId"`
 	Tag            string          `json:"tag"`
-	PosSide        string          `json:"posSide"` // net, ...
+	PosSide        string          `json:"posSide"` // net, long, ...
 	Type           OrderType       `json:"ordType"`
 	Side           OrderSide       `json:"side"`  // 'buy' or 'sell'
 	Status         OrderStatus     `json:"state"` // Order Status: -2 = Failed -1 = Canceled 0 = Open 1 = Partially Filled 2 = Fully Filled 3 = Submitting 4 = Canceling
@@ -232,11 +235,11 @@ type WithdrawalFeesListWrapper struct {
 //easyjson:json
 type OrderUpdateWS struct {
 	*Order
-	LastFillPrice   decimal.Decimal `json:"last_fill_px"`   // Latest Filled Price. '0' will be returned if the data is empty
-	LastFillQty     decimal.Decimal `json:"last_fill_qty"`  // Latest Filled Volume. '0' will be returned if the data is empty.
-	LastFillTradeID decimal.Decimal `json:"last_fill_id"`   // Trade id. '0' will be returned if the data is empty
-	LastFillTime    time.Time       `json:"last_fill_time"` // Latest Filled Time. The '1970-01-01T00:00:00.000Z' will be returned if the data is empty.
-	CreatedAt       time.Time       `json:"created_at"`     // date created order. Now 'Timestamp' this is date event
+	// if need, should add string fields
+	//LastFillPrice   decimal.Decimal `json:"fillPx"`   // Latest Filled Price. '0' will be returned if the data is empty
+	//LastFillQty     decimal.Decimal `json:"fillSz"`   // Latest Filled Volume. '0' will be returned if the data is empty.
+	//LastFillTradeID decimal.Decimal `json:"tradeId"`  // Trade id. '0' will be returned if the data is empty
+	//LastFillTime    string          `json:"fillTime"` // 1597026383085
 }
 
 type WSEventTable string
@@ -263,14 +266,14 @@ type WSEvent struct {
 
 //easyjson:json
 type UserOrdersWS struct {
-	Table WSEventTable     `json:"table"` // WSEventTableSpotOrder
-	Data  []*OrderUpdateWS `json:"data"`
+	Arg  *BaseOpSubscriptionArgs `json:"arg"`
+	Data []*OrderUpdateWS        `json:"data"`
 }
 
 //easyjson:json
 type UserSpotAccountWS struct {
-	Table WSEventTable            `json:"table"` // WSEventTableSpotAccount
-	Data  SpotAccountBalancesList `json:"data"`
+	Arg  *BaseOpSubscriptionArgs `json:"arg"`
+	Data SpotAccountBalancesList `json:"data"`
 }
 
 //easyjson:json

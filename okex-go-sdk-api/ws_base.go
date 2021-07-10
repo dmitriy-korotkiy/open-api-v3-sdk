@@ -20,52 +20,104 @@ import (
 
 //easyjson:json
 type BaseOp struct {
-	Op   string   `json:"op"`
-	Args []string `json:"args"`
+	Op string `json:"op"`
 }
 
-func subscribeOp(sts []*SubscriptionTopic) (op *BaseOp, err error) {
+//easyjson:json
+type BaseOpLoginArgs struct {
+	ApiKey     string `json:"apiKey"`
+	Passphrase string `json:"passphrase"`
+	Timestamp  string `json:"timestamp"`
+	Sign       string `json:"sign"`
+}
 
-	strArgs := []string{}
+//easyjson:json
+type BaseOpLogin struct {
+	BaseOp
+	Args []BaseOpLoginArgs `json:"args"`
+}
 
-	for i := 0; i < len(sts); i++ {
-		channel, err := sts[i].ToString()
-		if err != nil {
-			return nil, err
+//easyjson:json
+type BaseOpSubscriptionArgs struct {
+	Channel  string `json:"channel"`
+	InstId   string `json:"instId,omitempty"`
+	Ccy      string `json:"ccy,omitempty"`
+	InstType string `json:"instType,omitempty"`
+}
+
+//easyjson:json
+type BaseOpSubscription struct {
+	BaseOp
+	Args []BaseOpSubscriptionArgs `json:"args"`
+}
+
+func subscribeOp(sts []*SubscriptionTopic) (op *BaseOpSubscription, err error) {
+	args := make([]BaseOpSubscriptionArgs, 0, len(sts))
+	for _, st := range sts {
+		arg := BaseOpSubscriptionArgs{
+			Channel: st.channel,
 		}
-		strArgs = append(strArgs, channel)
+
+		switch st.channel {
+		case string(AccountChanel):
+			arg.Ccy = st.filter
+		case string(OrderChanel):
+			arg.InstType = st.filter
+		default:
+			arg.InstId = st.filter
+		}
+
+		args = append(args, arg)
 	}
 
-	b := BaseOp{
-		Op:   "subscribe",
-		Args: strArgs,
+	b := BaseOpSubscription{
+		BaseOp: BaseOp{
+			Op: CHNL_EVENT_SUBSCRIBE,
+		},
+		Args: args,
 	}
 	return &b, nil
 }
 
-func unsubscribeOp(sts []*SubscriptionTopic) (op *BaseOp, err error) {
-
-	strArgs := []string{}
-
-	for i := 0; i < len(sts); i++ {
-		channel, err := sts[i].ToString()
-		if err != nil {
-			return nil, err
+func unsubscribeOp(sts []*SubscriptionTopic) (op *BaseOpSubscription, err error) {
+	args := make([]BaseOpSubscriptionArgs, 0, len(sts))
+	for _, st := range sts {
+		arg := BaseOpSubscriptionArgs{
+			Channel: st.channel,
 		}
-		strArgs = append(strArgs, channel)
+
+		switch st.channel {
+		case string(AccountChanel):
+			arg.Ccy = st.filter
+		case string(OrderChanel):
+			arg.InstType = st.filter
+		default:
+			arg.InstId = st.filter
+		}
+
+		args = append(args, arg)
 	}
 
-	b := BaseOp{
-		Op:   CHNL_EVENT_UNSUBSCRIBE,
-		Args: strArgs,
+	b := BaseOpSubscription{
+		BaseOp: BaseOp{
+			Op: CHNL_EVENT_UNSUBSCRIBE,
+		},
+		Args: args,
 	}
 	return &b, nil
 }
 
-func loginOp(apiKey string, passphrase string, timestamp string, sign string) (op *BaseOp, err error) {
-	b := BaseOp{
-		Op:   "login",
-		Args: []string{apiKey, passphrase, timestamp, sign},
+func loginOp(apiKey string, passphrase string, timestamp string, sign string) (op *BaseOpLogin, err error) {
+	b := BaseOpLogin{
+		BaseOp: BaseOp{
+			Op: "login",
+		},
+		Args: []BaseOpLoginArgs{{
+			ApiKey:     apiKey,
+			Passphrase: passphrase,
+			Timestamp:  timestamp,
+			Sign:       sign,
+		}},
 	}
 	return &b, nil
 }
@@ -74,18 +126,6 @@ func loginOp(apiKey string, passphrase string, timestamp string, sign string) (o
 type SubscriptionTopic struct {
 	channel string
 	filter  string `default:""`
-}
-
-func (st *SubscriptionTopic) ToString() (topic string, err error) {
-	if len(st.channel) == 0 {
-		return "", ERR_WS_SUBSCRIOTION_PARAMS
-	}
-
-	if len(st.filter) > 0 {
-		return st.channel + ":" + st.filter, nil
-	} else {
-		return st.channel, nil
-	}
 }
 
 //easyjson:json
@@ -101,22 +141,21 @@ func (r *WSEventResponse) Valid() bool {
 
 //easyjson:json
 type WSTableResponse struct {
-	Table  string          `json:"table"`
-	Action string          `json:"action",default:""`
-	Data   json.RawMessage `json:"data"`
+	Arg    *BaseOpSubscriptionArgs `json:"arg"`
+	Action string                  `json:"action",default:""`
+	Data   json.RawMessage         `json:"data"`
 }
 
 func (r *WSTableResponse) Valid() bool {
-	return (len(r.Table) > 0 || len(r.Action) > 0) && len(r.Data) > 0
+	return (r.Arg != nil || len(r.Action) > 0) && len(r.Data) > 0
 }
 
 //easyjson:json
 type WSDepthItem struct {
-	InstrumentId string               `json:"instrument_id"`
-	Asks         [][3]decimal.Decimal `json:"asks"`
-	Bids         [][3]decimal.Decimal `json:"bids"`
-	Timestamp    string               `json:"timestamp"`
-	Checksum     int32                `json:"checksum"`
+	Asks      [][3]decimal.Decimal `json:"asks"`
+	Bids      [][3]decimal.Decimal `json:"bids"`
+	Timestamp string               `json:"ts"`
+	Checksum  int32                `json:"checksum"`
 }
 
 func mergeDepths(oldDepths [][3]decimal.Decimal, newDepths [][3]decimal.Decimal) (*[][3]decimal.Decimal, error) {
@@ -229,16 +268,16 @@ func calCrc32(askDepths *[][3]decimal.Decimal, bidDepths *[][3]decimal.Decimal) 
 
 //easyjson:json
 type WSDepthTableResponse struct {
-	Table  string          `json:"table"`
-	Action string          `json:"action",default:""`
-	Data   WSDepthItemList `json:"data"`
+	Arg    *BaseOpSubscriptionArgs `json:"arg"`
+	Action string                  `json:"action",default:""`
+	Data   WSDepthItemList         `json:"data"`
 }
 
 //easyjson:json
 type WSDepthItemList []*WSDepthItem
 
 func (r *WSDepthTableResponse) Valid() bool {
-	return (len(r.Table) > 0 || len(r.Action) > 0) && strings.Contains(r.Table, "depth") && len(r.Data) > 0
+	return (r.Arg != nil || len(r.Action) > 0) && strings.Contains(r.Arg.Channel, string(BooksChanel)) && len(r.Data) > 0
 }
 
 //easyjson:json
@@ -255,9 +294,9 @@ func NewWSHotDepths(tb string) *WSHotDepths {
 }
 
 func (d *WSHotDepths) loadWSDepthTableResponse(r *WSDepthTableResponse) error {
-	if d.Table != r.Table {
+	if d.Table != r.Arg.Channel {
 		return fmt.Errorf("Loading WSDepthTableResponse failed becoz of "+
-			"WSTableResponse(%s) not matched with WSHotDepths(%s)", r.Table, d.Table)
+			"WSTableResponse(%s) not matched with WSHotDepths(%s)", r.Arg.Channel, d.Table)
 	}
 
 	if !r.Valid() {
@@ -266,11 +305,11 @@ func (d *WSHotDepths) loadWSDepthTableResponse(r *WSDepthTableResponse) error {
 
 	switch r.Action {
 	case "partial":
-		d.Table = r.Table
+		d.Table = r.Arg.Channel
 		for i := 0; i < len(r.Data); i++ {
 			crc32BaseBuffer, expectCrc32 := calCrc32(&r.Data[i].Asks, &r.Data[i].Bids)
 			if expectCrc32 == r.Data[i].Checksum || true { // TODO fix!
-				d.DepthMap[r.Data[i].InstrumentId] = r.Data[i]
+				d.DepthMap[r.Arg.InstId] = r.Data[i]
 			} else {
 				return fmt.Errorf("Checksum's not correct. LocalString: %s, LocalCrc32: %d, RemoteCrc32: %d",
 					crc32BaseBuffer.String(), expectCrc32, r.Data[i].Checksum)
@@ -280,13 +319,13 @@ func (d *WSHotDepths) loadWSDepthTableResponse(r *WSDepthTableResponse) error {
 	case "update":
 		for i := 0; i < len(r.Data); i++ {
 			newDI := r.Data[i]
-			oldDI := d.DepthMap[newDI.InstrumentId]
+			oldDI := d.DepthMap[r.Arg.InstId]
 			if oldDI != nil {
 				if err := oldDI.update(newDI); err != nil {
 					return err
 				}
 			} else {
-				d.DepthMap[newDI.InstrumentId] = newDI
+				d.DepthMap[r.Arg.InstId] = newDI
 			}
 		}
 
@@ -319,9 +358,9 @@ func loadResponse(rspMsg []byte) (interface{}, error) {
 	tr := WSTableResponse{}
 	err = JsonBytes2Struct(rspMsg, &tr)
 	if err == nil && tr.Valid() {
-		if strings.Contains(tr.Table, "depth") {
+		if strings.Contains(tr.Arg.Channel, string(BooksChanel)) {
 			dtr := WSDepthTableResponse{
-				Table:  tr.Table,
+				Arg:    tr.Arg,
 				Action: tr.Action,
 			}
 
@@ -329,22 +368,28 @@ func loadResponse(rspMsg []byte) (interface{}, error) {
 			if err == nil && dtr.Valid() {
 				return &dtr, nil
 			}
-		} else if tr.Table == "spot/account" {
+		} else if tr.Arg.Channel == string(AccountChanel) {
 			atr := UserSpotAccountWS{
-				Table: WSEventTable(tr.Table),
+				Arg: tr.Arg,
 			}
 
 			err = JsonBytes2Struct(tr.Data, &atr.Data)
 			if err == nil {
 				return &atr, nil
 			}
-		} else if tr.Table == "spot/order" {
+		} else if tr.Arg.Channel == string(OrderChanel) {
 			atr := UserOrdersWS{
-				Table: WSEventTable(tr.Table),
+				Arg: tr.Arg,
 			}
 
 			err = JsonBytes2Struct(tr.Data, &atr.Data)
 			if err == nil {
+				for _, o := range atr.Data {
+					err = calcOrderFields(o.Order)
+					if err != nil {
+						panic(err)
+					}
+				}
 				return &atr, nil
 			}
 		}

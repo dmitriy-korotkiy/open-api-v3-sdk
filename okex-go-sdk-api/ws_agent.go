@@ -25,6 +25,15 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+type ChanelType string
+
+const (
+	AccountChanel ChanelType = "account"
+	OrderChanel   ChanelType = "orders"
+	BooksChanel   ChanelType = "books"
+	Books50Chanel ChanelType = "books50-l2-tbt"
+)
+
 type OKWSAgent struct {
 	baseUrl string
 	config  *Config
@@ -97,7 +106,14 @@ func (a *OKWSAgent) Start(config *Config) error {
 		}
 
 		for _, fn := range fns {
-			if err = a.Subscribe(channel, filter, fn); err != nil {
+			var filters []string
+			if filter == "" {
+				filters = append(filters, "")
+			} else {
+				filters = strings.Split(filter, ";")
+			}
+
+			if err = a.Subscribe(ChanelType(channel), filters, fn); err != nil {
 				return err
 			}
 		}
@@ -108,12 +124,15 @@ func (a *OKWSAgent) Start(config *Config) error {
 
 var wsLimiter = limiter.Limiter{Limit: 40, PeriodMillisecond: 1_000}
 
-func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) error {
+func (a *OKWSAgent) Subscribe(channel ChanelType, filters []string, cb ReceivedDataCallback) error {
 	a.processMut.Lock()
 	defer a.processMut.Unlock()
 
-	st := SubscriptionTopic{channel, filter}
-	bo, err := subscribeOp([]*SubscriptionTopic{&st})
+	sts := make([]*SubscriptionTopic, 0, len(filters))
+	for _, filter := range filters {
+		sts = append(sts, &SubscriptionTopic{string(channel), filter})
+	}
+	bo, err := subscribeOp(sts)
 	if err != nil {
 		return err
 	}
@@ -138,12 +157,7 @@ func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) e
 		return err
 	}
 
-	chName := st.channel
-	fullTopic, _ := st.ToString()
-	if fullTopic != "" {
-		chName = fullTopic
-	}
-
+	chName := getFullTopic(string(channel), filters)
 	cbs := a.subMap[chName]
 	if cbs == nil {
 		cbs = []ReceivedDataCallback{}
@@ -158,12 +172,15 @@ func (a *OKWSAgent) Subscribe(channel, filter string, cb ReceivedDataCallback) e
 	return nil
 }
 
-func (a *OKWSAgent) UnSubscribe(channel, filter string) error {
+func (a *OKWSAgent) UnSubscribe(channel ChanelType, filters []string) error {
 	a.processMut.Lock()
 	defer a.processMut.Unlock()
 
-	st := SubscriptionTopic{channel, filter}
-	bo, err := unsubscribeOp([]*SubscriptionTopic{&st})
+	sts := make([]*SubscriptionTopic, 0, len(filters))
+	for _, filter := range filters {
+		sts = append(sts, &SubscriptionTopic{string(channel), filter})
+	}
+	bo, err := unsubscribeOp(sts)
 	if err != nil {
 		return err
 	}
@@ -188,16 +205,19 @@ func (a *OKWSAgent) UnSubscribe(channel, filter string) error {
 		return err
 	}
 
-	chName := st.channel
-	fullTopic, _ := st.ToString()
-	if fullTopic != "" {
-		chName = fullTopic
-	}
-
+	chName := getFullTopic(string(channel), filters)
 	a.subMap[chName] = nil
 	a.activeChannels[chName] = false
 
 	return nil
+}
+
+func getFullTopic(channel string, filters []string) string {
+	if len(filters) == 0 {
+		return channel
+	}
+
+	return channel + ":" + strings.Join(filters, ";")
 }
 
 func (a *OKWSAgent) Login(apiKey, passphrase string) error {
@@ -302,28 +322,46 @@ func (a *OKWSAgent) handleTableResponse(r interface{}) error {
 	tb := ""
 	switch r.(type) {
 	case *WSTableResponse:
-		tb = r.(*WSTableResponse).Table
+		tb = r.(*WSTableResponse).Arg.Channel
 	case *UserSpotAccountWS:
 		v := r.(*UserSpotAccountWS)
 		if len(v.Data) > 0 {
-			tb = string(v.Table) + ":" + v.Data[0].Currency
+			tb = string(v.Arg.Channel) + ":" + v.Arg.Ccy
 		} else {
 			return fmt.Errorf("handleTableResponse() !(len(UserSpotAccountWS.Data) > 0)")
 		}
 	case *UserOrdersWS:
 		v := r.(*UserOrdersWS)
 		if len(v.Data) > 0 {
-			tb = string(v.Table) + ":" + v.Data[0].Pair
+			tb = v.Arg.Channel + ":" + v.Arg.InstType
 		} else {
 			return fmt.Errorf("handleTableResponse() !(len(UserOrdersWS.Data) > 0)")
 		}
 	case *WSDepthTableResponse:
 		v := r.(*WSDepthTableResponse)
 		if len(v.Data) > 0 {
-			tb = v.Table + ":" + v.Data[0].InstrumentId
+			tb = v.Arg.Channel + ":" + v.Arg.InstId
 		} else {
 			return fmt.Errorf("handleTableResponse() !(len(WSDepthTableResponse.Data) > 0)")
 		}
+
+		a.processMut.RLock()
+		defer a.processMut.RUnlock()
+
+		for key, cbs := range a.subMap {
+			if !strings.HasPrefix(key, v.Arg.Channel+":") || !(strings.HasSuffix(key, v.Arg.InstId) || strings.Contains(key, v.Arg.InstId+";")) {
+				continue
+			}
+
+			for i := 0; i < len(cbs); i++ {
+				cb := cbs[i]
+				if err := cb(r); err != nil {
+					return err
+				}
+			}
+		}
+
+		return nil
 	}
 
 	a.processMut.RLock()
