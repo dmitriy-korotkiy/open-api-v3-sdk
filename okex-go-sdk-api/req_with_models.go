@@ -190,7 +190,8 @@ type Order struct {
 	FeeCurrency    string          `json:"feeCcy"`
 	Pair           string          `json:"instId"`
 	Tag            string          `json:"tag"`
-	PosSide        string          `json:"posSide"` // net, long, ...
+	InstrumentType string          `json:"instType"` // SPOT, FUTURES, ...
+	PosSide        string          `json:"posSide"`  // net, long, ...
 	Type           OrderType       `json:"ordType"`
 	Side           OrderSide       `json:"side"`  // 'buy' or 'sell'
 	Status         OrderStatus     `json:"state"` // Order Status: -2 = Failed -1 = Canceled 0 = Open 1 = Partially Filled 2 = Fully Filled 3 = Submitting 4 = Canceling

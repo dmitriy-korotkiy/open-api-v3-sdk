@@ -6129,6 +6129,8 @@ func easyjson25363b2dDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi61(in *jle
 			out.Pair = string(in.String())
 		case "tag":
 			out.Tag = string(in.String())
+		case "instType":
+			out.InstrumentType = string(in.String())
 		case "posSide":
 			out.PosSide = string(in.String())
 		case "ordType":
@@ -6220,6 +6222,11 @@ func easyjson25363b2dEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi61(out *jw
 		const prefix string = ",\"tag\":"
 		out.RawString(prefix)
 		out.String(string(in.Tag))
+	}
+	{
+		const prefix string = ",\"instType\":"
+		out.RawString(prefix)
+		out.String(string(in.InstrumentType))
 	}
 	{
 		const prefix string = ",\"posSide\":"
@@ -6415,6 +6422,8 @@ func easyjson25363b2dDecodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi63(in *jle
 			out.Pair = string(in.String())
 		case "tag":
 			out.Tag = string(in.String())
+		case "instType":
+			out.InstrumentType = string(in.String())
 		case "posSide":
 			out.PosSide = string(in.String())
 		case "ordType":
@@ -6506,6 +6515,11 @@ func easyjson25363b2dEncodeGithubComDarkfoxs96OpenApiV3SdkOkexGoSdkApi63(out *jw
 		const prefix string = ",\"tag\":"
 		out.RawString(prefix)
 		out.String(string(in.Tag))
+	}
+	{
+		const prefix string = ",\"instType\":"
+		out.RawString(prefix)
+		out.String(string(in.InstrumentType))
 	}
 	{
 		const prefix string = ",\"posSide\":"
