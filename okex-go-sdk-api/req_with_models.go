@@ -253,8 +253,8 @@ const (
 type WSEventAction string
 
 const (
-	WSEventActionPartial WSEventAction = "partial"
-	WSEventActionUpdate  WSEventAction = "update"
+	WSEventActionSnapshot WSEventAction = "snapshot"
+	WSEventActionUpdate   WSEventAction = "update"
 )
 
 //easyjson:json

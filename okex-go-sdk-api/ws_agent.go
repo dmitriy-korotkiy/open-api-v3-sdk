@@ -452,7 +452,9 @@ func (a *OKWSAgent) receive() {
 				log.Printf("LoadedRep: %+v, err: %+v", rsp, err)
 			}
 		} else {
-			log.Printf("TextMsg: %s", txtMsg)
+			if a.config.IsPrint {
+				log.Printf("TextMsg: %s", txtMsg)
+			}
 		}
 
 		if err != nil {
