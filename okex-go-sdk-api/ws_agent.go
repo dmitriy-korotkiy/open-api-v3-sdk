@@ -382,7 +382,7 @@ func (a *OKWSAgent) handleTableResponse(r interface{}) error {
 func (a *OKWSAgent) work() {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Printf("Work End. Recover msg: %+v", a)
+			log.Printf("Work End. Recover msg: %+v", r)
 			debug.PrintStack()
 		}
 	}()
