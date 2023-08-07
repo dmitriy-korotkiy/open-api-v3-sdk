@@ -32,6 +32,7 @@ const (
 	OrderChanel   ChanelType = "orders"
 	BooksChanel   ChanelType = "books"
 	Books50Chanel ChanelType = "books50-l2-tbt"
+	Books5Chanel  ChanelType = "books5"
 )
 
 type OKWSAgent struct {
